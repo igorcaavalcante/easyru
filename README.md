@@ -1,7 +1,7 @@
 # EasyRU
 Uma aplicação para facilitar o funcionamento do Restaurante Universitário da UFAL Campus Arapiraca
 
-### Requirimentos
+### Requerimentos
 * **Python 3.6**
 * **Django 2.2.7**
 
