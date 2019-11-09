@@ -32,6 +32,6 @@ class Transacao(models.Model):
         def choices(cls):
             return tuple((i.name, i.value) for i in cls)
 
-    tipo = models.CharField(max_length=10, choices=Tipo.choices(), default=Tipo.Entrada)
+    tipo = models.CharField(max_length=10, choices=Tipo.choices())
     descricao = models.CharField(max_length=20)
     valor = models.IntegerField()
