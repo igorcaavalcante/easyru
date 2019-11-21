@@ -16,7 +16,6 @@ def home(request):
 def login(request):
     return HttpResponse("<h1>Falta colocar os templates</h1>")
 
-<<<<<<< HEAD
 def new_user(request):
     return HttpResponse("<h1>Falta colocar os templates</h1>")
 
@@ -24,10 +23,10 @@ def students(request):
     return HttpResponse("<h1>Falta colocar os templates</h1>")
 
 def new_meal(request):
-=======
+    return HttpResponse("<h1>Falta colocar os templates</h1>")
+
 def students(request):
     return HttpResponse("<h1>Falta colocar os templates</h1>")
 
 def newMeal(request):
->>>>>>> 1d808b6176d63a79c45012b53999506013a73a23
     return HttpResponse("<h1>Falta colocar os templates</h1>")
