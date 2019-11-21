@@ -10,23 +10,25 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
-def home(request):
-    return HttpResponse("<h1>Falta colocar os templates</h1>")
-
 def login(request):
-    return HttpResponse("<h1>Falta colocar os templates</h1>")
+    template = loader.get_template('application/login.html')
+    context = {
+
+    }
+    return HttpResponse(template.render(context, request))
 
 def new_user(request):
+    template = loader.get_template('application/new_user.html')
+    context = {
+
+    }
+    return HttpResponse(template.render(context, request))
+
+def home(request):
     return HttpResponse("<h1>Falta colocar os templates</h1>")
 
 def students(request):
     return HttpResponse("<h1>Falta colocar os templates</h1>")
 
 def new_meal(request):
-    return HttpResponse("<h1>Falta colocar os templates</h1>")
-
-def students(request):
-    return HttpResponse("<h1>Falta colocar os templates</h1>")
-
-def newMeal(request):
     return HttpResponse("<h1>Falta colocar os templates</h1>")

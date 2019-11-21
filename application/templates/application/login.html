@@ -1,0 +1,30 @@
+{% extends 'application/base.html' %}
+{% load static %}
+{% block title %}LOGIN{% endblock %}
+{% block css %}<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
+{% block content %}
+<form class="form-signin">
+  <div class="text-center mb-4">
+    <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+    <h1 class="h3 mb-3 font-weight-normal">LOGIN</h1>
+  </div>
+
+  <div class="form-label-group">
+    <input type="number" id="inputCPF" class="form-control" placeholder="CPF" required autofocus>
+    <label for="inputCPF">CPF</label>
+  </div>
+
+  <div class="form-label-group">
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+    <label for="inputPassword">Senha</label>
+  </div>
+
+  <div class="checkbox mb-3">
+    <label>
+      <input type="checkbox" value="remember-me"> Lembre-se de mim
+    </label>
+  </div>
+  <button class="btn btn-lg btn-danger btn-block" style="background-color:#A52A2A" type="submit">Entrar</button>
+  <p class="mt-5 mb-3 text-muted text-center">&copy;2019 UFAL Arapiraca</p>
+</form>
+{% endblock %}
