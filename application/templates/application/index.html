@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'application/base.html' %}
 {% load static %}
 {% block title %}EasyRU - UFAL{% endblock %}
@@ -14,3 +15,30 @@
       <a href="{% url 'new_user' %}" class="btn btn-lg button">Cadastre-se</a>
   </div>
 {% endblock %}
+=======
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>EasyRU - UFAL</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link href="../wireframes/css/homepage.css" rel="stylesheet">
+    </head>
+    <body>
+        <div id="fundo-externo">
+            <div id="fundo">
+                <img src="../wireframes/imagens/home.jpeg" alt="">
+            </div>
+        </div>
+        <div id="site">
+            <img src="../wireframes/imagens/download.png" width="150" style="margin-left:400px;">
+            <h1><b>EasyRU</b></h1>
+            <p><b>Plataforma unificada para cadastro e debito de boletos GRU do Restaurante Universitário da Universidade Federal de Alagoas</b></p>
+        </div>
+        <div id="botoes">
+            <a href="{% url 'login' %}" class="btn btn-lg " id="cadastrar">Logar GRU</a>
+            <a href="{% url 'newMeal' %}" class="btn btn-lg" id="debitar">Debitar GRU</a>
+        </div>
+    </body>
+</html>
+>>>>>>> 1d808b6176d63a79c45012b53999506013a73a23
