@@ -6,16 +6,6 @@ body {
     background-size: cover;
 }
 
-.info h1 {
-	text-shadow: 1px 0px 0px black,
-                 -1px 0px 0px black, 
-                 0px 1px 0px black, 
-                 0px -1px 0px black;
-	font-family: Arial Black;
-	font-size: 80px;
-	margin-bottom: 50px;
-}
-
 .info {
 	margin-top: 80px;
 	text-align: center;
@@ -27,6 +17,25 @@ body {
 	font-size: 20px;
 	margin-left: 200px;
 	margin-right: 200px;
+}
+
+.person-type {
+	text-align: center;
+	margin: 10px;
+}
+
+.info img {
+	width: 150px;
+}
+
+.info h1 {
+	text-shadow: 1px 0px 0px black,
+                 -1px 0px 0px black, 
+                 0px 1px 0px black, 
+                 0px -1px 0px black;
+	font-family: Arial Black;
+	font-size: 80px;
+	margin-bottom: 50px;
 }
 
 .button {
