@@ -32,7 +32,7 @@ h1 {
 }
 
 #background img {
-    width: 100%; 
+	width: 100%;
 }
 
 #site {
@@ -46,8 +46,7 @@ h1 {
 
 #site h1 {
 	text-align: center;
-
-
+	
 }
 
 #site p {
@@ -55,8 +54,8 @@ h1 {
 	text-align: center;
 }
 
-#buttons #debitar {
-	position: absolute;
+#buttons #cadastro {
+	position: fixed;
 	width: 200px;
 	right: 35.4%;
 	top: 60%;
@@ -64,25 +63,15 @@ h1 {
 	color: white;
 }
 
-#buttons #cadastrar {
-	position: absolute;
+#buttons #login {
+	position: fixed;
 	width: 200px;
 	right: 50.4%;
 	top: 60%;
 	background-color:#A52A2A;
 	color: white;
-
 }
 
-#buttons #pessoa {
-	position: absolute;
-	width: 200px;
-	right: 43.7%;
-	top: 69%;
-	background-color:#A52A2A;
-	color: white;
-
-}
 
 p {
     margin-bottom: 1.5em;
