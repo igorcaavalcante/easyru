@@ -1,0 +1,58 @@
+{% extends 'application/base.html' %}
+{% load static %}
+{% block title %}DEBITAR GRU{% endblock %}
+{% block css %}<link href="{% static 'css/forms.css' %}" rel="stylesheet">{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="py-5 text-center">
+    <h2>DEBITAR GRU</h2>
+    <p class="lead">Insira os dados do GRU abaixo</p>
+  </div>
+  <div class="row">
+    <div class="col-md-8" style="margin-left: 190px;">
+      <form>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="nome">CPF</label>
+            <input type="number" class="form-control" id="nome" required autofocus>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="Valor">Quantidade</label>
+            <input type="number" class="form-control" id="Valor" required>
+          </div>
+        </div>
+        <div class="person-type">
+          <form class="form-inline">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" id="graduando" value="graduando" checked>
+              <label class="form-check-label" for="graduando">
+                Graduando
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" id="servidor" value="servidor">
+              <label class="form-check-label" for="servidor">
+                Servidor/Professor
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" id="posgrad" value="posgrad">
+              <label class="form-check-label" for="posgrad">
+                Pós Graduando
+              </label>
+            </div>
+          </form>
+        </div>
+        <br>
+        <button style="background-color:#A52A2A; color: white;" class="btn btn-lg btn-block"
+          type="submit">Cadastrar</button>
+        <br>
+      </form>
+      <a href="{% url 'home' %}"><button style="background-color:#A52A2A; color: white;"
+          class="btn btn-lg btn-block" type="submit">Voltar</button></a>
+    </div>
+  </div>
+  <footer class="my-4 pt-5 text-muted text-center text-small">
+    <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
+  </footer>
+{% endblock %}
