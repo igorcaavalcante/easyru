@@ -2,37 +2,37 @@ from django.db import models
 from enum import Enum
 
 # Create your models here.
-class Funcionario(models.Model):
-    nome = models.CharField(max_length=50, help_text='Digite seu nome completo')
+class Operator(models.Model):
+    name = models.CharField(max_length=50, help_text='Digite seu nome completo')
     cpf = models.CharField(max_length=11)
-    senha = models.CharField(max_length=50, help_text='Digite sua senha')
+    password = models.CharField(max_length=50, help_text='Digite sua senha')
 
-class Usuario(models.Model):
-    nome = models.CharField(max_length=50, help_text='Digite seu nome completo')
+class User(models.Model):
+    name = models.CharField(max_length=50, help_text='Digite seu nome completo')
     cpf = models.CharField(max_length=11)
-    senha = models.CharField(max_length=50, help_text='Digite sua senha')
+    password = models.CharField(max_length=50, help_text='Digite sua senha')
 
-class Consumidor(models.Model):
-    nome = models.CharField(max_length=50, help_text='Digite seu nome completo')
+class Consumer(models.Model):
+    name = models.CharField(max_length=50, help_text='Digite seu nome completo')
     cpf = models.CharField(max_length=11)
-    credito = models.IntegerField()
-    bolsista = models.BooleanField(default=True)
+    credit = models.IntegerField()
+    has_studentship = models.BooleanField(default=True)
 
 class Gru(models.Model):
-    codigo = models.CharField(max_length=20)
-    valor = models.IntegerField()
-    nome_comprador = models.CharField(max_length=50)
-    competencia = models.CharField(max_length=20)
-    funcionario = models.CharField(max_length=20)
+    code = models.CharField(max_length=20)
+    value = models.IntegerField()
+    consumer_name = models.CharField(max_length=50)
+    competence = models.CharField(max_length=20)
+    operator = models.CharField(max_length=20)
 
-class Transacao(models.Model):
-    class Tipo(Enum):
-        Entrada = 'Entrada'
-        Saida = 'Saida'
+class Transaction(models.Model):
+    class Type(Enum):
+        Input = 'Input'
+        Output = 'Output'
         @classmethod
         def choices(cls):
             return tuple((i.name, i.value) for i in cls)
 
-    tipo = models.CharField(max_length=10, choices=Tipo.choices())
-    descricao = models.CharField(max_length=20)
-    valor = models.IntegerField()
+    type = models.CharField(max_length=10, choices=Type.choices())
+    description = models.CharField(max_length=20)
+    value = models.IntegerField()
