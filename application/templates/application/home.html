@@ -1,0 +1,17 @@
+{% extends 'application/base.html' %}
+{% load static %}
+{% block title %}EasyRU - UFAL{% endblock %}
+{% block css %}
+<link href="{% static 'css/index.css' %}" rel="stylesheet">{% endblock %}
+{% block content %}
+<div class="info">
+    <img src="{% static 'imagens/download.png' %}">
+    <h1><b>EasyRU</b></h1>
+    <p><b>Sistema de gerenciamento de GRUs - Universidade Federal de Alagoas</b></p>
+    <div class="buttons">
+        <a href="{% url 'grus_new' %}" class="btn btn-lg button">Cadastrar GRU</a>
+        <a href="{% url 'grus_debit' %}" class="btn btn-lg button">Debitar GRU</a>
+        <a href="{% url 'consumers_new' %}" class="btn btn-lg button">Cadastrar Pessoa</a>
+    </div>
+</div>
+{% endblock %}

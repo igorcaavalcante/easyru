@@ -5,6 +5,7 @@ from enum import Enum
 class Funcionario(models.Model):
     nome = models.CharField(max_length=50, help_text='Digite seu nome completo')
     cpf = models.CharField(max_length=11)
+    senha = models.CharField(max_length=50, help_text='Digite sua senha')
 
 class Usuario(models.Model):
     nome = models.CharField(max_length=50, help_text='Digite seu nome completo')
