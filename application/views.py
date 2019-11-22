@@ -8,13 +8,13 @@ def index(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
-def login(request):
-    template = loader.get_template('application/login.html')
+def operators_login(request):
+    template = loader.get_template('application/operators_login.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
-def new_user(request):
-    template = loader.get_template('application/new_user.html')
+def operators_new(request):
+    template = loader.get_template('application/operators_new.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
@@ -23,22 +23,22 @@ def home(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
-def student(request):
-    template = loader.get_template('application/student.html')
+def consumers(request):
+    template = loader.get_template('application/consumers.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
-def new_student(request):
-    template = loader.get_template('application/new_student.html')
+def consumers_new(request):
+    template = loader.get_template('application/consumers_new.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
-def meal(request):
-    template = loader.get_template('application/meal.html')
+def grus_debit(request):
+    template = loader.get_template('application/grus_debit.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
-def new_meal(request):
-    template = loader.get_template('application/new_meal.html')
+def grus_new(request):
+    template = loader.get_template('application/grus_new.html')
     context = {}
     return HttpResponse(template.render(context, request))
