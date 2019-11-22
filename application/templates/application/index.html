@@ -1,16 +1,16 @@
 {% extends 'application/base.html' %}
 {% load static %}
 {% block title %}EasyRU - UFAL{% endblock %}
-{% block css %}<link href="{% static 'css/index.css' %}" rel="stylesheet">{% endblock %}
+{% block css %}
+<link href="{% static 'css/index.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
-  <div class="info">
-      <img src="{% static 'imagens/download.png' %}">
-      <h1><b>EasyRU</b></h1>
-      <p><strong>Plataforma unificada para cadastro e débito de boletos GRU do Restaurante Universitário da Universidade
-              Federal de Alagoas</strong></p>
-  </div>
-  <div class="buttons">
-      <a href="{% url 'login' %}" class="btn btn-lg button">Entrar no Sistema</a>
-      <a href="{% url 'new_user' %}" class="btn btn-lg button">Cadastre-se</a>
-  </div>
+<div class="info">
+  <img src="{% static 'imagens/download.png' %}">
+  <h1><b>EasyRU</b></h1>
+  <p><strong>Plataforma unificada para cadastro e débito de boletos GRU do Restaurante Universitário da Universidade
+      Federal de Alagoas</strong></p>
+</div>
+<div class="buttons">
+  <a href="{% url 'login' %}" class="btn btn-lg button">Entrar no Sistema</a>
+</div>
 {% endblock %}
