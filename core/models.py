@@ -1,16 +1,22 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 from enum import Enum
+from application.managers import OperatorManager
 
 # Create your models here.
-class Operator(models.Model):
+class Operator(AbstractUser):
+    username = None
+    cpf = models.CharField(max_length=11, unique=True, help_text='Digite seu CPF')
     name = models.CharField(max_length=50, help_text='Digite seu nome completo')
-    cpf = models.CharField(max_length=11)
-    password = models.CharField(max_length=50, help_text='Digite sua senha')
 
-class User(models.Model):
-    name = models.CharField(max_length=50, help_text='Digite seu nome completo')
-    cpf = models.CharField(max_length=11)
-    password = models.CharField(max_length=50, help_text='Digite sua senha')
+    USERNAME_FIELD = 'cpf'
+    REQUIRED_FIELDS = []
+
+    objects = OperatorManager()
+
+    class Meta:
+        verbose_name = 'operator'
+        verbose_name_plural = 'operators'
 
 class Consumer(models.Model):
     name = models.CharField(max_length=50, help_text='Digite seu nome completo')

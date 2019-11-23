@@ -7,10 +7,21 @@
 <div class="info">
   <img src="{% static 'imagens/download.png' %}">
   <h1><b>EasyRU</b></h1>
-  <p><strong>Plataforma unificada para cadastro e débito de boletos GRU do Restaurante Universitário da Universidade
-      Federal de Alagoas</strong></p>
+  <p><strong>Sistema de gerenciamento de GRUs - Universidade Federal de Alagoas</strong></p>
+  {% if user.is_authenticated %}
+    <h4>Seja Bem vindo, {{user.name}}</h4>
+  {% endif %}
 </div>
-<div class="buttons">
-  <a href="{% url 'operators_login' %}" class="btn btn-lg button">Entrar no Sistema</a>
-</div>
+{% if user.is_authenticated %}
+  <div class="buttons">
+    <a href="{% url 'grus_new' %}" class="btn btn-lg button">Cadastrar GRU</a>
+    <a href="{% url 'grus_debit' %}" class="btn btn-lg button">Debitar GRU</a>
+    <a href="{% url 'consumers_new' %}" class="btn btn-lg button">Cadastrar Pessoa</a>
+  </br><a href="{% url 'operators_logout' %}" class="btn btn-lg button">Deslogar</a>
+  </div>
+{% else %}
+  <div class="buttons">
+    <a href="{% url 'operators_login' %}" class="btn btn-lg button">Entrar no Sistema</a>
+  </div>
+{% endif %}
 {% endblock %}

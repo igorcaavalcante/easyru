@@ -4,26 +4,21 @@
 {% block css %}
 <link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
-<form class="form-signin">
+<form class="form-signin" method="post">
   <div class="text-center mb-4">
     <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">CADASTRO</h1>
   </div>
-
-  <div class="form-label-group">
-    <input type="text" id="inputName" class="form-control" placeholder="Name" required autofocus>
-    <label for="inputCPF">Nome</label>
-  </div>
-
-  <div class="form-label-group">
-    <input type="number" id="inputCPF" class="form-control" placeholder="CPF" required autofocus>
-    <label for="inputCPF">CPF</label>
-  </div>
-
-  <div class="form-label-group">
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-    <label for="inputPassword">Senha</label>
-  </div>
+  {% csrf_token %}
+  {% for field in form %}
+    <div class="form-label-group">
+      {{ field }}
+      {{ field.label_tag }}
+    </div>
+    {% for error in field.errors %}
+      <p class="alert alert-danger">{{ error }}</p>
+    {% endfor %}
+  {% endfor %}
 
   <button class="btn btn-lg btn-danger btn-block" style="background-color:#A52A2A" type="submit">Cadastrar Funcionário
   </button>

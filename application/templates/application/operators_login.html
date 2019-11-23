@@ -4,19 +4,19 @@
 {% block css %}
 <link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
-<form class="form-signin">
+<form class="form-signin" method="post">
   <div class="text-center mb-4">
     <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">LOGIN</h1>
   </div>
-
+  {% csrf_token %}
   <div class="form-label-group">
-    <input type="number" id="inputCPF" class="form-control" placeholder="CPF" required autofocus>
+    <input type="number" id="inputCPF" class="form-control" placeholder="CPF" name="cpf" required autofocus>
     <label for="inputCPF">CPF</label>
   </div>
 
   <div class="form-label-group">
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>
     <label for="inputPassword">Senha</label>
   </div>
 
