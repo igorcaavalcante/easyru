@@ -26,9 +26,12 @@ class consumerNewForm(forms.ModelForm):
 class gruNewForm(forms.ModelForm):
     class Meta:
         model = Gru
-        fields = ('code', 'value', 'consumer_cpf')
+        fields = ('code', 'value', 'consumer_cpf', 'operator')
         labels = {
             'code' : 'Código de Barras',
             'value' : 'Valor',
             'consumer_cpf' : 'CPF do Consumidor',
+        }
+        widgets = {
+            'operator': forms.HiddenInput()
         }

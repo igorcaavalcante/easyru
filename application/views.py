@@ -75,6 +75,7 @@ def grus(request):
 @login_required(login_url='operators_login')
 def grus_new(request):
     form = gruNewForm(request.POST or None)
+    form.fields['operator'].initial = request.user.name
     if form.is_valid():
         form.save()
         return redirect('grus')
