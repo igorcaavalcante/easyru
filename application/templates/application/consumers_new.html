@@ -1,8 +1,7 @@
 {% extends 'application/base.html' %}
 {% load static %}
 {% block title %}CADASTRAR PESSOA{% endblock %}
-{% block css %}
-<link href="{% static 'css/forms.css' %}" rel="stylesheet">{% endblock %}
+{% block css %}<link href="{% static 'css/forms.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
 <div class="container">
   <div class="py-5 text-center">
@@ -11,49 +10,34 @@
   </div>
   <div class="row">
     <div class="col-md-8" style="margin-left: 190px;">
-      <form>
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label for="nome">Nome</label>
-            <input type="text" class="form-control" id="nome" required autofocus>
-          </div>
-          <div class="col-md-6 mb-3">
-            <label for="Valor">CPF</label>
-            <input type="number" class="form-control" id="Valor" required>
-          </div>
+      <form class="form-signin" method="post">
+        <div class="text-center mb-4">
+          <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+          <h1 class="h3 mb-3 font-weight-normal">CADASTRO DE PESSOA</h1>
         </div>
-        <div class="person-type">
-          <form class="form-inline">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" id="graduando" value="graduando" checked>
-              <label class="form-check-label" for="graduando">
-                Graduando
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" id="servidor" value="servidor">
-              <label class="form-check-label" for="servidor">
-                Servidor/Professor
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" id="posgrad" value="posgrad">
-              <label class="form-check-label" for="posgrad">
-                Pós Graduando
-              </label>
-            </div>
-          </form>
-        </div>
-        <br>
-        <button style="background-color:#A52A2A; color: white;" class="btn btn-lg btn-block"
-          type="submit">Cadastrar</button>
-        <br>
+        
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="form-label-group">
+            {{ field }}
+            {{ field.label_tag }}
+          </div>
+          {% for error in field.errors %}
+            <p class="alert alert-danger">{{ error }}</p>
+          {% endfor %}
+        {% endfor %}
+
+        <button class="btn btn-lg btn-danger btn-block" style="background-color:#A52A2A"
+          type="submit">Cadastrar Pessoa</button>
+        <p class="mt-5 mb-3 text-muted text-center">&copy;2019 UFAL Arapiraca</p>
       </form>
-      <a href="{% url 'index' %}"><button style="background-color:#A52A2A; color: white;" class="btn btn-lg btn-block"
-          type="submit">Voltar</button></a>
+      <br>
+      <a href="{% url 'index' %}"><button style="background-color:#A52A2A; color: white;"
+        class="btn btn-lg btn-block">Voltar</button></a>
     </div>
   </div>
   <footer class="my-4 pt-5 text-muted text-center text-small">
     <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
   </footer>
-  {% endblock %}
+</div>
+{% endblock %}

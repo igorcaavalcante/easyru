@@ -1,0 +1,43 @@
+{% extends 'application/base.html' %}
+{% load static %}
+{% block title %}CADASTRAR PESSOA{% endblock %}
+{% block css %}<link href="{% static 'css/forms.css' %}" rel="stylesheet">{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="py-5 text-center">
+    <h2>CADASTRAR PESSOA</h2>
+    <p class="lead">Insira os dados</p>
+  </div>
+  <div class="row">
+    <div class="col-md-8" style="margin-left: 190px;">
+      <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Valor</th>
+          <th>CPF</th>
+          <th>Operador</th>
+          <th>Opções</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for gru in object_list %}
+        <tr>
+          <td>{{ gru.code }}</td>
+          <td>{{ gru.value }}</td>
+          <td>{{ gru.consumer_cpf }}</td>
+          <td>{{ gru.operator }}</td>
+          <th><a href="{% url 'grus_delete' gru.id %}">Deletar</a></th>
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
+      <a href="{% url 'index' %}"><button style="background-color:#A52A2A; color: white;"
+        class="btn btn-lg btn-block">Voltar</button></a>
+    </div>
+  </div>
+  <footer class="my-4 pt-5 text-muted text-center text-small">
+    <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
+  </footer>
+</div>
+{% endblock %}

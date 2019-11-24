@@ -1,8 +1,7 @@
 {% extends 'application/base.html' %}
 {% load static %}
 {% block title %}DEBITAR GRU{% endblock %}
-{% block css %}
-<link href="{% static 'css/forms.css' %}" rel="stylesheet">{% endblock %}
+{% block css %}<link href="{% static 'css/forms.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
 <div class="container">
   <div class="py-5 text-center">
@@ -49,11 +48,12 @@
           type="submit">Cadastrar</button>
         <br>
       </form>
-      <a href="{% url 'index' %}"><button style="background-color:#A52A2A; color: white;" class="btn btn-lg btn-block"
-          type="submit">Voltar</button></a>
+      <a href="{% url 'index' %}"><button style="background-color:#A52A2A; color: white;"
+        class="btn btn-lg btn-block">Voltar</button></a>
     </div>
   </div>
   <footer class="my-4 pt-5 text-muted text-center text-small">
     <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
   </footer>
-  {% endblock %}
+</div>
+{% endblock %}

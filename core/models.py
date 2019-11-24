@@ -6,8 +6,8 @@ from application.managers import OperatorManager
 # Create your models here.
 class Operator(AbstractUser):
     username = None
-    cpf = models.CharField(max_length=11, unique=True, help_text='Digite seu CPF')
-    name = models.CharField(max_length=50, help_text='Digite seu nome completo')
+    cpf = models.CharField(max_length=11, unique=True)
+    name = models.CharField(max_length=50)
 
     USERNAME_FIELD = 'cpf'
     REQUIRED_FIELDS = []
@@ -19,17 +19,16 @@ class Operator(AbstractUser):
         verbose_name_plural = 'operators'
 
 class Consumer(models.Model):
-    name = models.CharField(max_length=50, help_text='Digite seu nome completo')
+    name = models.CharField(max_length=50)
     cpf = models.CharField(max_length=11)
-    credit = models.IntegerField()
-    has_studentship = models.BooleanField(default=True)
+    credit = models.IntegerField(default=0)
+    has_studentship = models.BooleanField(default=False)
 
 class Gru(models.Model):
     code = models.CharField(max_length=20)
-    value = models.IntegerField()
-    consumer_name = models.CharField(max_length=50)
-    competence = models.CharField(max_length=20)
-    operator = models.CharField(max_length=20)
+    value = models.IntegerField(default=0)
+    consumer_cpf = models.CharField(max_length=11)
+    operator = models.CharField(max_length=50)
 
 class Transaction(models.Model):
     class Type(Enum):

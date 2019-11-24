@@ -1,40 +1,39 @@
 {% extends 'application/base.html' %}
 {% load static %}
 {% block title %}CADASTRAR GRU{% endblock %}
-{% block css %}{% endblock %}
+{% block css %}<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
 <div class="container">
-    <div class="py-5 text-center">
-        <h2>CADASTRAR GRU</h2>
-        <p class="lead">Insira os dados do GRU abaixo</p>
+  <div class="py-5 text-center">
+    <h2>CADASTRAR GRU</h2>
+    <p class="lead">Insira os dados do GRU abaixo</p>
+  </div>
+  <div class="row">
+    <div class="col-md-8" style="margin-left: 190px;">
+      <form class="form-signin" method="post">
+
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="form-label-group">
+            {{ field }}
+            {{ field.label_tag }}
+          </div>
+          {% for error in field.errors %}
+            <p class="alert alert-danger">{{ error }}</p>
+          {% endfor %}
+        {% endfor %}
+        <input type="hidden" >
+        <button class="btn btn-lg btn-danger btn-block" style="background-color:#A52A2A"
+          type="submit">Cadastrar GRU</button>
+        <p class="mt-5 mb-3 text-muted text-center">&copy;2019 UFAL Arapiraca</p>
+      </form>
+      <br>
+      <a href="{% url 'index' %}"><button style="background-color:#A52A2A; color: white;"
+        class="btn btn-lg btn-block">Voltar</button></a>
     </div>
-    <div class="row">
-        <div class="col-md-8" style="margin-left: 190px;">
-            <form>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="nome">CPF</label>
-                        <input type="number" class="form-control" id="nome" required autofocus>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="Valor">Valor</label>
-                        <input type="number" class="form-control" id="Valor" required>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="Código de Barras">Código de Barras</label>
-                    <input type="number" class="form-control" id="Código de Barras" required>
-                </div>
-                <br>
-                <button style="background-color:#A52A2A; color: white;" class="btn btn-lg btn-block"
-                    type="submit">Cadastrar</button>
-                <br>
-            </form>
-            <a href="{% url 'index' %}"><button style="background-color:#A52A2A; color: white;"
-                    class="btn btn-lg btn-block" type="submit">Voltar</button></a>
-        </div>
-    </div>
-    <footer class="my-4 pt-5 text-muted text-center text-small">
-        <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
-    </footer>
-    {% endblock %}
+  </div>
+  <footer class="my-4 pt-5 text-muted text-center text-small">
+      <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
+  </footer>
+</div>
+{% endblock %}

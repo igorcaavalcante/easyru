@@ -17,7 +17,10 @@
     <a href="{% url 'grus_new' %}" class="btn btn-lg button">Cadastrar GRU</a>
     <a href="{% url 'grus_debit' %}" class="btn btn-lg button">Debitar GRU</a>
     <a href="{% url 'consumers_new' %}" class="btn btn-lg button">Cadastrar Pessoa</a>
-  </br><a href="{% url 'operators_logout' %}" class="btn btn-lg button">Deslogar</a>
+    </br>
+    <a href="{% url 'grus' %}" class="btn btn-lg button">Grus</a>
+    <a href="{% url 'operators_logout' %}" class="btn btn-lg button">Deslogar</a>
+    <a href="{% url 'consumers' %}" class="btn btn-lg button">Pessoas</a>
   </div>
 {% else %}
   <div class="buttons">
