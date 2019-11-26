@@ -3,7 +3,7 @@ from django.template import loader
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from .forms import *
-from core.models import Consumer, Gru
+from core.models import Consumer, Gru, Transaction
 
 def index(request):
     return render(request, 'application/index.html')

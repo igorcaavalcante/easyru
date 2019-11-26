@@ -20,7 +20,7 @@ class Operator(AbstractUser):
 
 class Consumer(models.Model):
     name = models.CharField(max_length=50)
-    cpf = models.CharField(max_length=11)
+    cpf = models.CharField(max_length=11, unique=True)
     credit = models.IntegerField(default=0)
     has_studentship = models.BooleanField(default=False)
 
@@ -39,5 +39,4 @@ class Transaction(models.Model):
             return tuple((i.name, i.value) for i in cls)
 
     type = models.CharField(max_length=10, choices=Type.choices())
-    description = models.CharField(max_length=20)
     value = models.IntegerField()
