@@ -1,7 +1,7 @@
 {% extends 'application/base.html' %}
 {% load static %}
 {% block title %}DEBITAR GRU{% endblock %}
-{% block css %}<link href="{% static 'css/forms.css' %}" rel="stylesheet">{% endblock %}
+{% block css %}<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
 <div class="container">
   <div class="py-5 text-center">
@@ -10,40 +10,42 @@
   </div>
   <div class="row">
     <div class="col-md-8" style="margin-left: 190px;">
-      <form>
+      <form method="post">
+        {% csrf_token %}
         <div class="row">
           <div class="col-md-6 mb-3">
-            <label for="nome">CPF</label>
-            <input type="number" class="form-control" id="nome" required autofocus>
+            <label>CPF</label>
+            <input type="number" class="form-control" name="cpf" required autofocus>
           </div>
           <div class="col-md-6 mb-3">
-            <label for="Valor">Quantidade</label>
-            <input type="number" class="form-control" id="Valor" required>
+            <label>Quantidade</label>
+            <input type="number" class="form-control" name="quantity" required>
           </div>
         </div>
         <div class="person-type">
-          <form class="form-inline">
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" id="graduando" value="graduando" checked>
-              <label class="form-check-label" for="graduando">
+              <input class="form-check-input" type="radio" name="value" value="3" checked>
+              <label class="form-check-label">
                 Graduando
               </label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" id="servidor" value="servidor">
-              <label class="form-check-label" for="servidor">
-                Servidor/Professor
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" id="posgrad" value="posgrad">
-              <label class="form-check-label" for="posgrad">
+              <input class="form-check-input" type="radio" name="value" value="5">
+              <label class="form-check-label">
                 Pós Graduando
               </label>
             </div>
-          </form>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="value" value="8">
+              <label class="form-check-label">
+                Servidor/Professor
+              </label>
+            </div>
         </div>
         <br>
+        {% if error != "" %}
+        <p class="alert alert-danger">{{ error }}</p>
+        {% endif %}
         <button style="background-color:#A52A2A; color: white;" class="btn btn-lg btn-block"
           type="submit">Cadastrar</button>
         <br>

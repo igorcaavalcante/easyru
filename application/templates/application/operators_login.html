@@ -25,6 +25,11 @@
       <input type="checkbox" value="remember-me"> Lembre-se de mim
     </label>
   </div>
+
+  {% if error != "" %}
+  <p class="alert alert-danger">{{ error }}</p>
+  {% endif %}
+
   <button class="btn btn-lg btn-danger btn-block" style="background-color:#A52A2A" type="submit">Entrar</button>
   <p class="mt-5 mb-3 text-muted text-center">&copy;2019 UFAL Arapiraca</p>
 </form>

@@ -6,7 +6,7 @@ class OperatorManager(BaseUserManager):
     def create_user(self, cpf, password, **extra_fields):
         if not cpf:
             raise ValueError(_('CPF não pode ser Nulo!'))
-        cpf = self.cpf
+
         user = self.model(cpf=cpf, **extra_fields)
         user.set_password(password)
         user.save()

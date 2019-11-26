@@ -10,17 +10,15 @@ def index(request):
 
 ### Authentication ###
 def operators_login(request):
+    error = ""
     if request.method == 'POST':
-        cpf = request.POST['cpf']
-        password = request.POST['password']
-        user = authenticate(request, cpf=cpf, password=password)
+        user = authenticate(request, cpf=request.POST['cpf'], password=request.POST['password'])
         if user is not None:
             login(request, user)
             return redirect('index')
         else:
-            return redirect('operators_login')
-    else:
-        return render(request, 'application/operators_login.html')
+            error = "Usuario ou Senha Incorretos!"
+    return render(request, 'application/operators_login.html', {'error' : error})
 
 def operators_new(request):
     if request.method == 'POST':
@@ -79,8 +77,10 @@ def grus_new(request):
 
     if form.is_valid():
         consumer = get_object_or_404(Consumer, cpf=form.data['consumer_cpf'])
+        transaction = Transaction(type=Transaction.Type.Input.value, value=form.data['value'])
         if consumer:
             consumer.credit += int(form.data['value'])
+            transaction.save()
             consumer.save()
             form.save()
             return redirect('grus')
@@ -88,8 +88,23 @@ def grus_new(request):
 
 @login_required(login_url='operators_login')
 def grus_debit(request):
-    # how shall i do?
-    return render(request, 'application/grus_debit.html')
+    error = ""
+    if request.method == 'POST':
+        value = int(request.POST['quantity']) * int(request.POST['value'])
+        try:
+            consumer = Consumer.objects.get(cpf=request.POST['cpf'])
+            if consumer.credit >= value:
+                transaction = Transaction(type=Transaction.Type.Output.value, value= value)
+                consumer.credit -= value
+                transaction.save()
+                consumer.save()
+                return redirect('index')
+            else:
+                error = "Consumidor não Possui Saldo!"
+        except Consumer.DoesNotExist:
+            error = "Consumidor não Existe!"
+
+    return render(request, 'application/grus_debit.html', {'error':error})
 
 @login_required(login_url='operators_login')
 def grus_delete(request, pk):
