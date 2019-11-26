@@ -58,7 +58,7 @@ def consumers_new(request):
 
 @login_required(login_url='operators_login')
 def consumers_delete(request, pk):
-    consumer= get_object_or_404(Consumer, pk=pk)
+    consumer = get_object_or_404(Consumer, pk=pk)
     if consumer:
         consumer.delete()
         return redirect('consumers')
@@ -76,9 +76,14 @@ def grus(request):
 def grus_new(request):
     form = gruNewForm(request.POST or None)
     form.fields['operator'].initial = request.user.name
+
     if form.is_valid():
-        form.save()
-        return redirect('grus')
+        consumer = get_object_or_404(Consumer, cpf=form.data['consumer_cpf'])
+        if consumer:
+            consumer.credit += int(form.data['value'])
+            consumer.save()
+            form.save()
+            return redirect('grus')
     return render(request, 'application/grus_new.html', { 'form':form })
 
 @login_required(login_url='operators_login')
@@ -88,7 +93,7 @@ def grus_debit(request):
 
 @login_required(login_url='operators_login')
 def grus_delete(request, pk):
-    gru= get_object_or_404(Gru, pk=pk)
+    gru = get_object_or_404(Gru, pk=pk)
     if gru:
         gru.delete()
         return redirect('grus')
