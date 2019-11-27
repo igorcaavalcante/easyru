@@ -1,6 +1,6 @@
 {% extends 'application/base.html' %}
 {% load static %}
-{% block title %}CADASTRAR PESSOA{% endblock %}
+{% block title %}GRUS{% endblock %}
 {% block css %}<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
 <div class="container">
@@ -25,7 +25,7 @@
         {% for gru in object_list %}
         <tr>
           <td>{{ gru.code }}</td>
-          <td>{{ gru.value }}</td>
+          <td>R$ {{ gru.value }}.00</td>
           <td>{{ gru.consumer_cpf }}</td>
           <td>{{ gru.operator }}</td>
           <th><a href="{% url 'grus_delete' gru.id %}">Deletar</a></th>

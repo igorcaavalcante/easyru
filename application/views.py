@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.template import loader
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -7,6 +7,8 @@ from core.models import Consumer, Gru, Transaction
 
 def index(request):
     return render(request, 'application/index.html')
+
+
 
 ### Authentication ###
 def operators_login(request):
@@ -64,7 +66,7 @@ def consumers_delete(request, pk):
         consumer.delete()
         return redirect('consumers')
     except Consumer.DoesNotExist:
-        error = "Consumidor não Existe!"
+        error = "Pessoa Não Cadastrada!"
         return render(request, 'application/consumers.html', { 'error':error })
 
 ### Grus ###
@@ -81,14 +83,17 @@ def grus_new(request):
     if request.method == 'POST':
         gru = Gru(code=request.POST['code'],value=request.POST['value'], consumer_cpf=request.POST['consumer_cpf'], operator=request.user.name)
         if gru:
-            consumer = get_object_or_404(Consumer, cpf=gru.consumer_cpf)
-            transaction = Transaction(type=Transaction.Type.Input.value, value=form.data['value'])
-            if consumer:
-                consumer.credit += int(form.data['value'])
+            try:
+                consumer = Consumer.objects.get(cpf=gru.consumer_cpf)
+                transaction = Transaction(type=Transaction.Type.Input.value, value=gru.value)
+                consumer.credit += int(gru.value)
                 transaction.save()
                 consumer.save()
-                form.save()
+                gru.save()
                 return redirect('grus')
+            except Consumer.DoesNotExist:
+                error = "Pessoa Não Cadastrada!"
+
     return render(request, 'application/grus_new.html', { 'error':error })
 
 @login_required(login_url='operators_login')
@@ -105,9 +110,9 @@ def grus_debit(request):
                 consumer.save()
                 return redirect('index')
             else:
-                error = "Consumidor não Possui Saldo!"
+                error = "Pessoa não Possui Saldo!"
         except Consumer.DoesNotExist:
-            error = "Consumidor não Existe!"
+            error = "Pessoa Não Cadastrada!"
 
     return render(request, 'application/grus_debit.html', {'error':error})
 
@@ -121,3 +126,11 @@ def grus_delete(request, pk):
     except Gru.DoesNotExist:
         error = "Gru não Existe!"
         return render(request, 'application/grus.html', { 'error':error })
+
+### Transactions ###
+@login_required(login_url='operators_login')
+def transactions(request):
+    transaction = Transaction.objects.all()
+    data = {}
+    data['object_list'] = transaction
+    return render(request, 'application/transactions.html', data)

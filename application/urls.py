@@ -14,4 +14,5 @@ urlpatterns = [
     path('grus/debit/', views.grus_debit, name='grus_debit'),
     path('grus/new/', views.grus_new, name='grus_new'),
     path('grus/delete/<int:pk>', views.grus_delete, name='grus_delete'),
+    path('transactions/', views.transactions, name='transactions'),
 ]

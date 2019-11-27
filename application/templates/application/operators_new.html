@@ -1,6 +1,6 @@
 {% extends 'application/base.html' %}
 {% load static %}
-{% block title %}CADASTRO{% endblock %}
+{% block title %}CADASTRO DE USUARIO{% endblock %}
 {% block css %}
 <link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
@@ -15,11 +15,26 @@
       <form method="post">
 
         {% csrf_token %}
+        <div class="form-label-group">
+          <input class="form-control" type="text" name="cpf" maxlength="11" autofocus="" required="" id="id_cpf">
+          <label for="id_cpf">CPF:</label>
+        </div>
+
+        <div class="form-label-group">
+          <input class="form-control" type="text" name="name" maxlength="50" required="" id="id_name">
+          <label for="id_name">Nome:</label>
+        </div>
+
+        <div class="form-label-group">
+          <input class="form-control" type="password" name="password1" required="" id="id_password1">
+          <label for="id_password1">Senha:</label>
+        </div>
+
+        <div class="form-label-group">
+          <input class="form-control" type="password" name="password2" required="" id="id_password2">
+          <label for="id_password2">Confirmar Senha:</label>
+        </div>
         {% for field in form %}
-          <div class="form-label-group">
-            {{ field }}
-            {{ field.label_tag }}
-          </div>
           {% for error in field.errors %}
             <p class="alert alert-danger">{{ error }}</p>
           {% endfor %}
