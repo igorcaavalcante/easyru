@@ -18,7 +18,7 @@ def operators_login(request):
             return redirect('index')
         else:
             error = "Usuario ou Senha Incorretos!"
-    return render(request, 'application/operators_login.html', {'error' : error})
+    return render(request, 'application/operators_login.html', {'error':error})
 
 def operators_new(request):
     if request.method == 'POST':
@@ -32,7 +32,7 @@ def operators_new(request):
             return redirect('index')
     else:
         form = operatorsNewForm()
-    return render(request, 'application/operators_new.html', {'form': form})
+    return render(request, 'application/operators_new.html', {'form':form})
 
 def operators_logout(request):
     logout(request)
@@ -48,19 +48,24 @@ def consumers(request):
 
 @login_required(login_url='operators_login')
 def consumers_new(request):
-    form = consumerNewForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        return redirect('consumers')
-    return render(request, 'application/consumers_new.html', { 'form':form })
+    error = ""
+    if request.method == 'POST':
+        consumer = Consumer(name=request.POST['name'], cpf=request.POST['cpf'], credit=0, has_studentship=False)
+        if consumer:
+            consumer.save()
+            return redirect('consumers')
+    return render(request, 'application/consumers_new.html', { 'error':error })
 
 @login_required(login_url='operators_login')
 def consumers_delete(request, pk):
-    consumer = get_object_or_404(Consumer, pk=pk)
-    if consumer:
+    error = ""
+    try:
+        consumer = Consumer.objects.get(pk=pk)
         consumer.delete()
         return redirect('consumers')
-    return render(request, 'application/consumers.html', { 'object':consumer })
+    except Consumer.DoesNotExist:
+        error = "Consumidor não Existe!"
+        return render(request, 'application/consumers.html', { 'error':error })
 
 ### Grus ###
 @login_required(login_url='operators_login')
@@ -72,19 +77,19 @@ def grus(request):
 
 @login_required(login_url='operators_login')
 def grus_new(request):
-    form = gruNewForm(request.POST or None)
-    form.fields['operator'].initial = request.user.name
-
-    if form.is_valid():
-        consumer = get_object_or_404(Consumer, cpf=form.data['consumer_cpf'])
-        transaction = Transaction(type=Transaction.Type.Input.value, value=form.data['value'])
-        if consumer:
-            consumer.credit += int(form.data['value'])
-            transaction.save()
-            consumer.save()
-            form.save()
-            return redirect('grus')
-    return render(request, 'application/grus_new.html', { 'form':form })
+    error = ""
+    if request.method == 'POST':
+        gru = Gru(code=request.POST['code'],value=request.POST['value'], consumer_cpf=request.POST['consumer_cpf'], operator=request.user.name)
+        if gru:
+            consumer = get_object_or_404(Consumer, cpf=gru.consumer_cpf)
+            transaction = Transaction(type=Transaction.Type.Input.value, value=form.data['value'])
+            if consumer:
+                consumer.credit += int(form.data['value'])
+                transaction.save()
+                consumer.save()
+                form.save()
+                return redirect('grus')
+    return render(request, 'application/grus_new.html', { 'error':error })
 
 @login_required(login_url='operators_login')
 def grus_debit(request):
@@ -94,7 +99,7 @@ def grus_debit(request):
         try:
             consumer = Consumer.objects.get(cpf=request.POST['cpf'])
             if consumer.credit >= value:
-                transaction = Transaction(type=Transaction.Type.Output.value, value= value)
+                transaction = Transaction(type=Transaction.Type.Output.value, value=value)
                 consumer.credit -= value
                 transaction.save()
                 consumer.save()
@@ -108,8 +113,11 @@ def grus_debit(request):
 
 @login_required(login_url='operators_login')
 def grus_delete(request, pk):
-    gru = get_object_or_404(Gru, pk=pk)
-    if gru:
+    error = ""
+    try:
+        gru = Gru.objects.get(pk=pk)
         gru.delete()
         return redirect('grus')
-    return render(request, 'application/grus.html', { 'object':gru })
+    except Gru.DoesNotExist:
+        error = "Gru não Existe!"
+        return render(request, 'application/grus.html', { 'error':error })

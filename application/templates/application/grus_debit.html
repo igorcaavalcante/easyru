@@ -5,49 +5,54 @@
 {% block content %}
 <div class="container">
   <div class="py-5 text-center">
-    <h2>DEBITAR GRU</h2>
+    <h2>DEBITAR REFEIÇÃO</h2>
     <p class="lead">Insira os dados do GRU abaixo</p>
   </div>
   <div class="row">
-    <div class="col-md-8" style="margin-left: 190px;">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
       <form method="post">
         {% csrf_token %}
         <div class="row">
-          <div class="col-md-6 mb-3">
-            <label>CPF</label>
-            <input type="number" class="form-control" name="cpf" required autofocus>
+          <div class="col-md-6">
+            <div class="form-label-group">
+              <input type="number" class="form-control" name="cpf" required autofocus>
+              <label>CPF</label>
+            </div>
           </div>
-          <div class="col-md-6 mb-3">
-            <label>Quantidade</label>
-            <input type="number" class="form-control" name="quantity" required>
+          <div class="col-md-6">
+            <div class="form-label-group">
+              <input type="number" class="form-control" name="quantity" required>
+              <label>Quantidade</label>
+            </div>
           </div>
         </div>
-        <div class="person-type">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="value" value="3" checked>
-              <label class="form-check-label">
-                Graduando
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="value" value="5">
-              <label class="form-check-label">
-                Pós Graduando
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="value" value="8">
-              <label class="form-check-label">
-                Servidor/Professor
-              </label>
-            </div>
+        <div class="person-type text-center">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="value" value="3" checked>
+            <label class="form-check-label">
+              Graduando
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="value" value="5">
+            <label class="form-check-label">
+              Pós Graduando
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="value" value="8">
+            <label class="form-check-label">
+              Servidor/Professor
+            </label>
+          </div>
         </div>
         <br>
         {% if error != "" %}
         <p class="alert alert-danger">{{ error }}</p>
         {% endif %}
         <button style="background-color:#A52A2A; color: white;" class="btn btn-lg btn-block"
-          type="submit">Cadastrar</button>
+          type="submit">Creditar Pagamento</button>
         <br>
       </form>
       <a href="{% url 'index' %}"><button style="background-color:#A52A2A; color: white;"

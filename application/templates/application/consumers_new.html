@@ -9,27 +9,27 @@
     <p class="lead">Insira os dados</p>
   </div>
   <div class="row">
-    <div class="col-md-8" style="margin-left: 190px;">
-      <form class="form-signin" method="post">
-        <div class="text-center mb-4">
-          <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-          <h1 class="h3 mb-3 font-weight-normal">CADASTRO DE PESSOA</h1>
-        </div>
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <form method="post">
 
         {% csrf_token %}
-        {% for field in form %}
-          <div class="form-label-group">
-            {{ field }}
-            {{ field.label_tag }}
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-label-group">
+              <input type="text" class="form-control" name="name" required autofocus>
+              <label>Nome</label>
+            </div>
           </div>
-          {% for error in field.errors %}
-            <p class="alert alert-danger">{{ error }}</p>
-          {% endfor %}
-        {% endfor %}
-
+          <div class="col-md-6">
+            <div class="form-label-group">
+              <input type="number" class="form-control" name="cpf" required>
+              <label>CPF</label>
+            </div>
+          </div>
+        </div>
         <button class="btn btn-lg btn-danger btn-block" style="background-color:#A52A2A"
           type="submit">Cadastrar Pessoa</button>
-        <p class="mt-5 mb-3 text-muted text-center">&copy;2019 UFAL Arapiraca</p>
       </form>
       <br>
       <a href="{% url 'index' %}"><button style="background-color:#A52A2A; color: white;"

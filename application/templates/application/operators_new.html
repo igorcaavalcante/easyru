@@ -4,24 +4,34 @@
 {% block css %}
 <link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
-<form class="form-signin" method="post">
-  <div class="text-center mb-4">
-    <h1 class="h3 mb-3 font-weight-normal">CADASTRO</h1>
+<div class="container">
+  <div class="py-5 text-center">
+    <h2>CADASTRO DE USUARIO</h2>
+    <p class="lead">Insira os dados do Usuario</p>
   </div>
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <form method="post">
 
-  {% csrf_token %}
-  {% for field in form %}
-    <div class="form-label-group">
-      {{ field }}
-      {{ field.label_tag }}
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="form-label-group">
+            {{ field }}
+            {{ field.label_tag }}
+          </div>
+          {% for error in field.errors %}
+            <p class="alert alert-danger">{{ error }}</p>
+          {% endfor %}
+        {% endfor %}
+
+        <button class="btn btn-lg btn-danger btn-block" style="background-color:#A52A2A"
+          type="submit">Cadastrar Funcionário</button>
+      </form>
     </div>
-    {% for error in field.errors %}
-      <p class="alert alert-danger">{{ error }}</p>
-    {% endfor %}
-  {% endfor %}
-
-  <button class="btn btn-lg btn-danger btn-block" style="background-color:#A52A2A" type="submit">Cadastrar Funcionário
-  </button>
-  <p class="mt-5 mb-3 text-muted text-center">&copy;2019 UFAL Arapiraca</p>
-</form>
+  </div>
+  <footer class="my-4 pt-5 text-muted text-center text-small">
+      <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
+  </footer>
+</div>
 {% endblock %}
