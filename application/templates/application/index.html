@@ -4,29 +4,97 @@
 {% block css %}
 <link href="{% static 'css/index.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
+
+{% if user.is_authenticated %}
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+  <a class="navbar-brand" href="#">EasyRU</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'grus' %}" class="btn btn-lg button">GRUs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'grus_debit' %}" class="btn btn-lg button">Nova Refeição</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'consumers' %}" class="btn btn-lg button">Pessoas</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'transactions' %}" class="btn btn-lg button">Transações</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <a class="nav-link" href="{% url 'operators_logout' %}" class="btn btn-lg button">Sair</a>
+    </form>
+  </div>
+</nav>
+<div class="container chart">
+  <main role="main">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+      <h1 class="h2">Dashboard</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+          <button class="btn btn-sm btn-outline-secondary">Share</button>
+          <button class="btn btn-sm btn-outline-secondary">Export</button>
+        </div>
+        <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+          <span data-feather="calendar"></span>
+          This week
+        </button>
+      </div>
+    </div>
+    <canvas class="my-4" id="myChart" width="900" height="380"></canvas>
+  </main>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+<script>
+  var ctx = document.getElementById("myChart");
+  var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      datasets: [{
+        data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
+        lineTension: 0,
+        backgroundColor: 'transparent',
+        borderColor: '#007bff',
+        borderWidth: 4,
+        pointBackgroundColor: '#007bff'
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: false
+          }
+        }]
+      },
+      legend: {
+        display: false,
+      }
+    }
+  });
+</script>
+{% else %}
 <div class="info">
   <img src="{% static 'imagens/download.png' %}">
   <h1><b>EasyRU</b></h1>
   <p><strong>Sistema de gerenciamento de GRUs - Universidade Federal de Alagoas</strong></p>
   {% if user.is_authenticated %}
-    <h4>Seja Bem vindo, {{user.name}}</h4>
+  <h4>Seja Bem vindo, {{user.name}}</h4>
   {% endif %}
 </div>
-{% if user.is_authenticated %}
-  <div class="buttons">
-    <a href="{% url 'grus_new' %}" class="btn btn-lg button">Cadastrar GRU</a>
-    <a href="{% url 'grus_debit' %}" class="btn btn-lg button">Debitar Refeição</a>
-    <a href="{% url 'consumers_new' %}" class="btn btn-lg button">Cadastrar Pessoa</a>
-    </br>
-    <a href="{% url 'grus' %}" class="btn btn-lg button">Grus</a>
-    <a href="{% url 'transactions' %}" class="btn btn-lg button">Transações</a>
-    <a href="{% url 'consumers' %}" class="btn btn-lg button">Pessoas</a>
-    </br>
-    <a href="{% url 'operators_logout' %}" class="btn btn-lg button">Deslogar</a>
-  </div>
-{% else %}
-  <div class="buttons">
-    <a href="{% url 'operators_login' %}" class="btn btn-lg button">Entrar no Sistema</a>
-  </div>
+<div class="buttons">
+  <a href="{% url 'operators_login' %}" class="btn btn-lg button">Entrar no Sistema</a>
+</div>
 {% endif %}
 {% endblock %}

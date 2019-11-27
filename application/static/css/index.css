@@ -1,4 +1,4 @@
-body {
+.background-image {
     background: url(../imagens/home.jpeg) fixed no-repeat;
     -webkit-background-size: cover;
     -o-background-size: cover;
@@ -48,4 +48,8 @@ body {
 .buttons {
 	text-align: center;
 	margin-top: 50px;
+}
+
+.chart {
+	margin-top: 100px;
 }
