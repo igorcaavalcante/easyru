@@ -1,0 +1,37 @@
+{% extends 'application/base.html' %}
+{% load static %}
+{% block title %}TRANSAÇÕES{% endblock %}
+{% block css %}<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
+{% block content %}
+{% include 'application/navbar.html'%}
+<div class="container">
+  <div class="py-5 text-center">
+    <h2>TRANSAÇÕES</h2>
+    <p class="lead">Lista das Transações Cadastradas no Sistema</p>
+  </div>
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Valor</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for transaction in object_list %}
+        <tr>
+          <td>{{ transaction.get_type }}</td>
+          <td>R$ {{ transaction.value }}.00</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
+    </div>
+  </div>
+  <footer class="my-4 pt-5 text-muted text-center text-small">
+    <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
+  </footer>
+</div>
+{% endblock %}

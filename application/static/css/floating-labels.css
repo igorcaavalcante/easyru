@@ -88,6 +88,11 @@ body {
   color: #777;
 }
 
+.btn-custom, .btn-custom:hover{
+  background-color: #A52A2A;
+  color: white;
+}
+
 /* Fallback for Edge
 -------------------------------------------------- */
 @supports (-ms-ime-align: auto) {

@@ -1,38 +1,65 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 from enum import Enum
+from application.managers import OperatorManager
 
 # Create your models here.
-class Funcionario(models.Model):
-    nome = models.CharField(max_length=50, help_text='Digite seu nome completo')
-    cpf = models.CharField(max_length=11)
-    senha = models.CharField(max_length=50, help_text='Digite sua senha')
+class Operator(AbstractUser):
+    username = None
+    cpf = models.CharField(max_length=11, unique=True)
+    name = models.CharField(max_length=50)
 
-class Usuario(models.Model):
-    nome = models.CharField(max_length=50, help_text='Digite seu nome completo')
-    cpf = models.CharField(max_length=11)
-    senha = models.CharField(max_length=50, help_text='Digite sua senha')
+    USERNAME_FIELD = 'cpf'
+    REQUIRED_FIELDS = ['name']
 
-class Consumidor(models.Model):
-    nome = models.CharField(max_length=50, help_text='Digite seu nome completo')
-    cpf = models.CharField(max_length=11)
-    credito = models.IntegerField()
-    bolsista = models.BooleanField(default=True)
+    objects = OperatorManager()
+
+    class Meta:
+        verbose_name = 'operator'
+        verbose_name_plural = 'operators'
+
+class Consumer(models.Model):
+    name = models.CharField(max_length=50)
+    cpf = models.CharField(max_length=11, unique=True)
+    credit = models.IntegerField(default=0)
+    has_studentship = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def get_studentship(self):
+        if self.has_studentship:
+            return "Sim"
+        else:
+            return "Não"
 
 class Gru(models.Model):
-    codigo = models.CharField(max_length=20)
-    valor = models.IntegerField()
-    nome_comprador = models.CharField(max_length=50)
-    competencia = models.CharField(max_length=20)
-    funcionario = models.CharField(max_length=20)
+    code = models.CharField(max_length=20)
+    value = models.IntegerField(default=0)
+    consumer_cpf = models.CharField(max_length=11)
+    operator = models.CharField(max_length=50)
+    created_at = models.DateTimeField(default=timezone.now)
 
-class Transacao(models.Model):
-    class Tipo(Enum):
-        Entrada = 'Entrada'
-        Saida = 'Saida'
+    def get_consumer_name(self):
+        try:
+            consumer = Consumer.objects.get(cpf=self.consumer_cpf)
+            return consumer.name
+        except Consumer.DoesNotExist:
+            return "None"
+
+class Transaction(models.Model):
+    class Type(Enum):
+        Input = 'Input'
+        Output = 'Output'
         @classmethod
         def choices(cls):
             return tuple((i.name, i.value) for i in cls)
 
-    tipo = models.CharField(max_length=10, choices=Tipo.choices())
-    descricao = models.CharField(max_length=20)
-    valor = models.IntegerField()
+    type = models.CharField(max_length=10, choices=Type.choices())
+    value = models.IntegerField()
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def get_type(self):
+        if self.type == Transaction.Type.Input.value:
+            return "Entrada"
+        else:
+            return "Saida"

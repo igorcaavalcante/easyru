@@ -1,0 +1,44 @@
+{% extends 'application/base.html' %}
+{% load static %}
+{% block title %}GRUS{% endblock %}
+{% block css %}<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
+{% block content %}
+{% include 'application/navbar.html'%}
+<div class="container">
+  <div class="py-5 text-center">
+    <h2>GRUS</h2>
+    <p class="lead">Lista das GRUS Cadastradas no Sistema</p>
+  </div>
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Valor</th>
+          <th>Consumidor</th>
+          <th>Operador</th>
+          <th>Opções</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for gru in object_list %}
+        <tr>
+          <td>{{ gru.code }}</td>
+          <td>R$ {{ gru.value }}.00</td>
+          <td>{{ gru.get_consumer_name }}</td>
+          <td>{{ gru.operator }}</td>
+          <th><a href="{% url 'grus_delete' gru.id %}"><i class="far fa-trash-alt"></i></a></th>
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
+      <a href="{% url 'grus_new' %}" class="btn btn-lg btn-block btn-custom">Cadastrar GRU</a>
+    </div>
+  </div>
+  <footer class="my-4 pt-5 text-muted text-center text-small">
+    <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
+  </footer>
+</div>
+{% endblock %}

@@ -1,59 +1,44 @@
 {% extends 'application/base.html' %}
 {% load static %}
 {% block title %}CADASTRAR PESSOA{% endblock %}
-{% block css %}
-<link href="{% static 'css/forms.css' %}" rel="stylesheet">{% endblock %}
+{% block css %}<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
+{% include 'application/navbar.html'%}
 <div class="container">
   <div class="py-5 text-center">
     <h2>CADASTRAR PESSOA</h2>
     <p class="lead">Insira os dados</p>
   </div>
   <div class="row">
-    <div class="col-md-8" style="margin-left: 190px;">
-      <form>
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <form method="post">
+        {% csrf_token %}
         <div class="row">
-          <div class="col-md-6 mb-3">
-            <label for="nome">Nome</label>
-            <input type="text" class="form-control" id="nome" required autofocus>
+          <div class="col-md-6">
+            <div class="form-label-group">
+              <input type="text" class="form-control" name="name" required autofocus>
+              <label>Nome</label>
+            </div>
           </div>
-          <div class="col-md-6 mb-3">
-            <label for="Valor">CPF</label>
-            <input type="number" class="form-control" id="Valor" required>
+          <div class="col-md-6">
+            <div class="form-label-group">
+              <input type="number" class="form-control" name="cpf" required>
+              <label>CPF</label>
+            </div>
           </div>
         </div>
-        <div class="person-type">
-          <form class="form-inline">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" id="graduando" value="graduando" checked>
-              <label class="form-check-label" for="graduando">
-                Graduando
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" id="servidor" value="servidor">
-              <label class="form-check-label" for="servidor">
-                Servidor/Professor
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" id="posgrad" value="posgrad">
-              <label class="form-check-label" for="posgrad">
-                Pós Graduando
-              </label>
-            </div>
-          </form>
-        </div>
-        <br>
-        <button style="background-color:#A52A2A; color: white;" class="btn btn-lg btn-block"
-          type="submit">Cadastrar</button>
-        <br>
+        {% if error != "" %}
+        <p class="alert alert-danger">{{ error }}</p>
+        {% endif %}
+        <button class="btn btn-lg btn-block btn-custom" type="submit">Cadastrar Pessoa</button>
       </form>
-      <a href="{% url 'home' %}"><button style="background-color:#A52A2A; color: white;" class="btn btn-lg btn-block"
-          type="submit">Voltar</button></a>
+      <br>
+      <a href="{% url 'consumers' %}" class="btn btn-lg btn-block btn-custom">Voltar</a>
     </div>
   </div>
   <footer class="my-4 pt-5 text-muted text-center text-small">
     <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
   </footer>
-  {% endblock %}
+</div>
+{% endblock %}

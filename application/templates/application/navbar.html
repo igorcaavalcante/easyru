@@ -1,0 +1,33 @@
+{% load static %}
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+  <a class="navbar-brand" href="">
+    <img src="{% static 'imagens/download.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+    EasyRU
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar"
+    aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbar">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'index' %}" class="btn btn-lg button">Inicio</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'grus_debit' %}" class="btn btn-lg button">Nova Refeição</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'grus' %}" class="btn btn-lg button">GRUs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'consumers' %}" class="btn btn-lg button">Pessoas</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'transactions' %}" class="btn btn-lg button">Transações</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <a class="nav-link" href="{% url 'operators_logout' %}" class="btn btn-lg button">Sair</a>
+    </form>
+  </div>
+</nav>
