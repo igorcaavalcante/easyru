@@ -28,13 +28,14 @@
           <td>R$ {{ gru.value }}.00</td>
           <td>{{ gru.consumer_cpf }}</td>
           <td>{{ gru.operator }}</td>
-          <th><a href="{% url 'grus_delete' gru.id %}">Deletar</a></th>
+          <th><a href="{% url 'grus_delete' gru.id %}"><i class="far fa-trash-alt"></i></a></th>
         </tr>
         {% endfor %}
       </tbody>
       </table>
-      <a href="{% url 'index' %}"><button style="background-color:#A52A2A; color: white;"
-        class="btn btn-lg btn-block">Voltar</button></a>
+      <a href="{% url 'grus_new' %}" class="btn btn-lg btn-block btn-custom">Cadastrar GRU</a>
+      <br>
+      <a href="{% url 'index' %}" class="btn btn-lg btn-block btn-custom">Voltar</a>
     </div>
   </div>
   <footer class="my-4 pt-5 text-muted text-center text-small">

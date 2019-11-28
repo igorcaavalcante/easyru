@@ -12,7 +12,6 @@
     <div class="col-md-3"></div>
     <div class="col-md-6">
       <form method="post">
-
         {% csrf_token %}
         <div class="row">
           <div class="col-md-6">
@@ -28,12 +27,10 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-lg btn-danger btn-block" style="background-color:#A52A2A"
-          type="submit">Cadastrar Pessoa</button>
+        <button class="btn btn-lg btn-block btn-custom" type="submit">Cadastrar Pessoa</button>
       </form>
       <br>
-      <a href="{% url 'index' %}"><button style="background-color:#A52A2A; color: white;"
-        class="btn btn-lg btn-block">Voltar</button></a>
+      <a href="{% url 'consumers' %}" class="btn btn-lg btn-block btn-custom">Voltar</a>
     </div>
   </div>
   <footer class="my-4 pt-5 text-muted text-center text-small">

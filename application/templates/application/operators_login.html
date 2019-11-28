@@ -4,32 +4,41 @@
 {% block css %}
 <link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
-<form class="form-signin" method="post">
-  <div class="text-center mb-4">
-    <h1 class="h3 mb-3 font-weight-normal">LOGIN</h1>
+<div class="container">
+  <div class="py-5 text-center">
+    <h2>LOGIN</h2>
   </div>
-  {% csrf_token %}
-  <div class="form-label-group">
-    <input type="number" id="inputCPF" class="form-control" placeholder="CPF" name="cpf" required autofocus>
-    <label for="inputCPF">CPF</label>
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <form class="form-signin" method="post">
+        {% csrf_token %}
+        <div class="form-label-group">
+          <input type="number" id="inputCPF" class="form-control" placeholder="CPF" name="cpf" required autofocus>
+          <label for="inputCPF">CPF</label>
+        </div>
+
+        <div class="form-label-group">
+          <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>
+          <label for="inputPassword">Senha</label>
+        </div>
+
+        <div class="checkbox mb-3">
+          <label>
+            <input type="checkbox" value="remember-me"> Lembre-se de mim
+          </label>
+        </div>
+
+        {% if error != "" %}
+        <p class="alert alert-danger">{{ error }}</p>
+        {% endif %}
+
+        <button class="btn btn-lg btn-block btn-custom" type="submit">Entrar</button>
+      </form>
+    </div>
   </div>
-
-  <div class="form-label-group">
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>
-    <label for="inputPassword">Senha</label>
-  </div>
-
-  <div class="checkbox mb-3">
-    <label>
-      <input type="checkbox" value="remember-me"> Lembre-se de mim
-    </label>
-  </div>
-
-  {% if error != "" %}
-  <p class="alert alert-danger">{{ error }}</p>
-  {% endif %}
-
-  <button class="btn btn-lg btn-danger btn-block" style="background-color:#A52A2A" type="submit">Entrar</button>
-  <p class="mt-5 mb-3 text-muted text-center">&copy;2019 UFAL Arapiraca</p>
-</form>
+  <footer class="my-4 pt-5 text-muted text-center text-small">
+      <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
+  </footer>
+</div>
 {% endblock %}

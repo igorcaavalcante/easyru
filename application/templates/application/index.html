@@ -7,7 +7,7 @@
 
 {% if user.is_authenticated %}
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" href="#">EasyRU</a>
+  <a class="navbar-brand" href="">EasyRU</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
     aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -39,7 +39,7 @@
 <div class="container chart">
   <main role="main">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-      <h1 class="h2">Dashboard</h1>
+      <h1 class="h2">Seja Bem Vindo, {{user.name}}</h1>
       <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
           <button class="btn btn-sm btn-outline-secondary">Share</button>
@@ -89,12 +89,9 @@
   <img src="{% static 'imagens/download.png' %}">
   <h1><b>EasyRU</b></h1>
   <p><strong>Sistema de gerenciamento de GRUs - Universidade Federal de Alagoas</strong></p>
-  {% if user.is_authenticated %}
-  <h4>Seja Bem vindo, {{user.name}}</h4>
-  {% endif %}
 </div>
-<div class="buttons">
-  <a href="{% url 'operators_login' %}" class="btn btn-lg button">Entrar no Sistema</a>
+<div class="text-center">
+  <a href="{% url 'operators_login' %}" class="btn btn-lg btn-custom">Entrar no Sistema</a>
 </div>
 {% endif %}
 {% endblock %}

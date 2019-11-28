@@ -12,7 +12,6 @@
     <div class="col-md-3"></div>
     <div class="col-md-6">
       <form method="post">
-
         {% csrf_token %}
         <div class="row">
           <div class="col-md-6">
@@ -36,12 +35,10 @@
         {% if error != "" %}
         <p class="alert alert-danger">{{ error }}</p>
         {% endif %}
-        <button class="btn btn-lg btn-block" style="background-color:#A52A2A; color: white;"
-          type="submit">Cadastrar GRU</button>
+        <button class="btn btn-lg btn-block btn-custom" type="submit">Cadastrar GRU</button>
       </form>
       <br>
-      <a href="{% url 'index' %}"><button style="background-color:#A52A2A; color: white;"
-        class="btn btn-lg btn-block">Voltar</button></a>
+      <a href="{% url 'grus' %}" class="btn btn-lg btn-block btn-custom">Voltar</a>
     </div>
   </div>
   <footer class="my-4 pt-5 text-muted text-center text-small">

@@ -29,34 +29,26 @@
         </div>
         <div class="person-type text-center">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="value" value="3" checked>
-            <label class="form-check-label">
-              Graduando
-            </label>
+            <input id="value-3" class="form-check-input" type="radio" name="value" value="3" checked>
+            <label for="value-3" class="form-check-label">Graduando</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="value" value="5">
-            <label class="form-check-label">
-              Pós Graduando
-            </label>
+            <input id="value-5" class="form-check-input" type="radio" name="value" value="5">
+            <label for="value-5" class="form-check-label">Pós Graduando</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="value" value="8">
-            <label class="form-check-label">
-              Servidor/Professor
-            </label>
+            <input id="value-8" class="form-check-input" type="radio" name="value" value="8">
+            <label for="value-8" class="form-check-label">Servidor/Professor</label>
           </div>
         </div>
         <br>
         {% if error != "" %}
         <p class="alert alert-danger">{{ error }}</p>
         {% endif %}
-        <button style="background-color:#A52A2A; color: white;" class="btn btn-lg btn-block"
-          type="submit">Creditar Pagamento</button>
+        <button class="btn btn-lg btn-block btn-custom" type="submit">Creditar Pagamento</button>
         <br>
       </form>
-      <a href="{% url 'index' %}"><button style="background-color:#A52A2A; color: white;"
-        class="btn btn-lg btn-block">Voltar</button></a>
+      <a href="{% url 'index' %}" class="btn btn-lg btn-block btn-custom">Voltar</a>
     </div>
   </div>
   <footer class="my-4 pt-5 text-muted text-center text-small">
