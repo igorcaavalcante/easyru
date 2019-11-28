@@ -27,7 +27,7 @@
           <td>{{ consumer.name }}</td>
           <td>{{ consumer.cpf }}</td>
           <td>R$ {{ consumer.credit }}.00</td>
-          <td>{{ consumer.has_studentship }}</td>
+          <td>{{ consumer.get_studentship }}</td>
           <th><a href="{% url 'consumers_delete' consumer.id %}"><i class="far fa-trash-alt"></i></a></th>
         </tr>
         {% endfor %}

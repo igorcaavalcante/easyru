@@ -21,7 +21,7 @@
       <tbody>
         {% for transaction in object_list %}
         <tr>
-          <td>{{ transaction.type }}</td>
+          <td>{{ transaction.get_type }}</td>
           <td>R$ {{ transaction.value }}.00</td>
         </tr>
         {% endfor %}

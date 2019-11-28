@@ -11,7 +11,7 @@ class Operator(AbstractUser):
     name = models.CharField(max_length=50)
 
     USERNAME_FIELD = 'cpf'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['name']
 
     objects = OperatorManager()
 
@@ -26,6 +26,12 @@ class Consumer(models.Model):
     has_studentship = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
 
+    def get_studentship(self):
+        if self.has_studentship:
+            return "Sim"
+        else:
+            return "Não"
+
 class Gru(models.Model):
     code = models.CharField(max_length=20)
     value = models.IntegerField(default=0)
@@ -33,12 +39,12 @@ class Gru(models.Model):
     operator = models.CharField(max_length=50)
     created_at = models.DateTimeField(default=timezone.now)
 
-    def get_consumer_name():
+    def get_consumer_name(self):
         try:
             consumer = Consumer.objects.get(cpf=self.consumer_cpf)
             return consumer.name
         except Consumer.DoesNotExist:
-            return None
+            return "None"
 
 class Transaction(models.Model):
     class Type(Enum):
@@ -51,3 +57,9 @@ class Transaction(models.Model):
     type = models.CharField(max_length=10, choices=Type.choices())
     value = models.IntegerField()
     created_at = models.DateTimeField(default=timezone.now)
+
+    def get_type(self):
+        if self.type == Transaction.Type.Input.value:
+            return "Entrada"
+        else:
+            return "Saida"

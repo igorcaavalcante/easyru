@@ -16,7 +16,7 @@
         <tr>
           <th>Código</th>
           <th>Valor</th>
-          <th>CPF</th>
+          <th>Consumidor</th>
           <th>Operador</th>
           <th>Opções</th>
         </tr>
@@ -26,7 +26,7 @@
         <tr>
           <td>{{ gru.code }}</td>
           <td>R$ {{ gru.value }}.00</td>
-          <td>{{ gru.consumer_cpf }}</td>
+          <td>{{ gru.get_consumer_name }}</td>
           <td>{{ gru.operator }}</td>
           <th><a href="{% url 'grus_delete' gru.id %}"><i class="far fa-trash-alt"></i></a></th>
         </tr>
