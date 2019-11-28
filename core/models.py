@@ -23,12 +23,21 @@ class Consumer(models.Model):
     cpf = models.CharField(max_length=11, unique=True)
     credit = models.IntegerField(default=0)
     has_studentship = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class Gru(models.Model):
     code = models.CharField(max_length=20)
     value = models.IntegerField(default=0)
     consumer_cpf = models.CharField(max_length=11)
     operator = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_consumer_name():
+        try:
+            consumer = Consumer.objects.get(cpf=self.consumer_cpf)
+            return consumer.name
+        except Consumer.DoesNotExist:
+            return None
 
 class Transaction(models.Model):
     class Type(Enum):
@@ -40,3 +49,4 @@ class Transaction(models.Model):
 
     type = models.CharField(max_length=10, choices=Type.choices())
     value = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
