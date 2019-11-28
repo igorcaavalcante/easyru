@@ -52,10 +52,13 @@ def consumers(request):
 def consumers_new(request):
     error = ""
     if request.method == 'POST':
-        consumer = Consumer(name=request.POST['name'], cpf=request.POST['cpf'], credit=0, has_studentship=False)
-        if consumer:
+        try:
+            consumer = Consumer(name=request.POST['name'], cpf=request.POST['cpf'], credit=0, has_studentship=False)
             consumer.save()
             return redirect('consumers')
+        except Exception as e:
+            error = "CPF Já Cadastrado!"
+
     return render(request, 'application/consumers_new.html', { 'error':error })
 
 @login_required(login_url='operators_login')

@@ -3,6 +3,7 @@
 {% block title %}CADASTRAR PESSOA{% endblock %}
 {% block css %}<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
+{% include 'application/navbar.html'%}
 <div class="container">
   <div class="py-5 text-center">
     <h2>CADASTRAR PESSOA</h2>
@@ -27,6 +28,9 @@
             </div>
           </div>
         </div>
+        {% if error != "" %}
+        <p class="alert alert-danger">{{ error }}</p>
+        {% endif %}
         <button class="btn btn-lg btn-block btn-custom" type="submit">Cadastrar Pessoa</button>
       </form>
       <br>

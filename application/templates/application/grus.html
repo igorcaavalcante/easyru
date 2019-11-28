@@ -3,6 +3,7 @@
 {% block title %}GRUS{% endblock %}
 {% block css %}<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
+{% include 'application/navbar.html'%}
 <div class="container">
   <div class="py-5 text-center">
     <h2>GRUS</h2>
@@ -34,8 +35,6 @@
       </tbody>
       </table>
       <a href="{% url 'grus_new' %}" class="btn btn-lg btn-block btn-custom">Cadastrar GRU</a>
-      <br>
-      <a href="{% url 'index' %}" class="btn btn-lg btn-block btn-custom">Voltar</a>
     </div>
   </div>
   <footer class="my-4 pt-5 text-muted text-center text-small">

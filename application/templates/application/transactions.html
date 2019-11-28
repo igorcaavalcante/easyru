@@ -3,6 +3,7 @@
 {% block title %}TRANSAÇÕES{% endblock %}
 {% block css %}<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
+{% include 'application/navbar.html'%}
 <div class="container">
   <div class="py-5 text-center">
     <h2>TRANSAÇÕES</h2>
@@ -27,8 +28,6 @@
         {% endfor %}
       </tbody>
       </table>
-      <a href="{% url 'index' %}"><button style="background-color:#A52A2A; color: white;"
-        class="btn btn-lg btn-block">Voltar</button></a>
     </div>
   </div>
   <footer class="my-4 pt-5 text-muted text-center text-small">
