@@ -1,9 +1,10 @@
 {% extends 'application/base.html' %}
 {% load static %}
 {% block title %}LOGIN{% endblock %}
-{% block css %}
-<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
+{% block css %}<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
+
+<body>
 <div class="container">
   <div class="py-5 text-center">
     <h2>LOGIN</h2>
@@ -41,4 +42,6 @@
       <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
   </footer>
 </div>
+</body>
+
 {% endblock %}

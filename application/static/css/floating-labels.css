@@ -93,6 +93,40 @@ body {
   color: white;
 }
 
+.background-image {
+    background: url(../imagens/home.jpeg) fixed no-repeat;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+}
+
+.info {
+	text-align: center;
+	color: white;
+	text-shadow: 1px 0px 0px black,
+                 -1px 0px 0px black,
+                 0px 1px 0px black,
+                 0px -1px 0px black;
+	font-size: 20px;
+	margin-left: 200px;
+	margin-right: 200px;
+}
+
+.info img {
+	width: 150px;
+}
+
+.info h1 {
+	text-shadow: 1px 0px 0px black,
+                 -1px 0px 0px black,
+                 0px 1px 0px black,
+                 0px -1px 0px black;
+	font-family: Arial Black;
+	font-size: 80px;
+	margin-bottom: 50px;
+}
+
 /* Fallback for Edge
 -------------------------------------------------- */
 @supports (-ms-ime-align: auto) {

@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.template import loader
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from core.forms import operatorsNewForm
@@ -8,6 +7,25 @@ from core.models import Consumer, Gru, Transaction
 def index(request):
     return render(request, 'application/index.html')
 
+@login_required(login_url='operators_login')
+def home(request):
+    error = ""
+    if request.method == 'POST':
+        try:
+            consumer = Consumer.objects.get(cpf=request.POST['cpf'])
+            if consumer.credit >= value:
+                transaction = Transaction(type=Transaction.Type.Output.value, value=value)
+                consumer.credit -= value
+                transaction.save()
+                consumer.save()
+                return redirect('home')
+            else:
+                error = "Pessoa não Possui Saldo!"
+        except Consumer.DoesNotExist:
+            error = "Pessoa Não Cadastrada!"
+
+    return render(request, 'application/home.html', {'error':error})
+
 ### Authentication ###
 def operators_login(request):
     error = ""
@@ -15,7 +33,7 @@ def operators_login(request):
         user = authenticate(request, cpf=request.POST['cpf'], password=request.POST['password'])
         if user is not None:
             login(request, user)
-            return redirect('index')
+            return redirect('home')
         else:
             error = "Usuario ou Senha Incorretos!"
     return render(request, 'application/operators_login.html', {'error':error})
@@ -29,7 +47,7 @@ def operators_new(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(cpf=cpf, password=raw_password)
             login(request, user)
-            return redirect('index')
+            return redirect('home')
     else:
         form = operatorsNewForm()
     return render(request, 'application/operators_new.html', {'form':form})
@@ -86,7 +104,7 @@ def grus_new(request):
         if gru:
             try:
                 consumer = Consumer.objects.get(cpf=gru.consumer_cpf)
-                transaction = Transaction(type=Transaction.Type.Input.value, value=gru.value)
+                transaction = Transaction(type=Transaction.Type.Input.value, value=gru.value, consumer_cpf=gru.consumer_cpf, operator=request.user.name)
                 consumer.credit += int(gru.value)
                 transaction.save()
                 consumer.save()
@@ -96,26 +114,6 @@ def grus_new(request):
                 error = "Pessoa Não Cadastrada!"
 
     return render(request, 'application/grus_new.html', { 'error':error })
-
-@login_required(login_url='operators_login')
-def grus_debit(request):
-    error = ""
-    if request.method == 'POST':
-        value = int(request.POST['quantity']) * int(request.POST['value'])
-        try:
-            consumer = Consumer.objects.get(cpf=request.POST['cpf'])
-            if consumer.credit >= value:
-                transaction = Transaction(type=Transaction.Type.Output.value, value=value)
-                consumer.credit -= value
-                transaction.save()
-                consumer.save()
-                return redirect('index')
-            else:
-                error = "Pessoa não Possui Saldo!"
-        except Consumer.DoesNotExist:
-            error = "Pessoa Não Cadastrada!"
-
-    return render(request, 'application/grus_debit.html', {'error':error})
 
 @login_required(login_url='operators_login')
 def grus_delete(request, pk):
