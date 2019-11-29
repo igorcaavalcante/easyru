@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 from enum import Enum
-from application.managers import OperatorManager
+from .managers import OperatorManager
 
 # Create your models here.
 class Operator(AbstractUser):
@@ -57,6 +57,8 @@ class Transaction(models.Model):
     type = models.CharField(max_length=10, choices=Type.choices())
     value = models.IntegerField()
     created_at = models.DateTimeField(default=timezone.now)
+    consumer_cpf = models.CharField(max_length=11)
+    operator = models.CharField(max_length=50)
 
     def get_type(self):
         if self.type == Transaction.Type.Input.value:
