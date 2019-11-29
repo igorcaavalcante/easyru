@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from core.forms import operatorsNewForm
 from core.models import Consumer, Gru, Transaction
+import json
 
 def index(request):
     return render(request, 'application/index.html')
@@ -23,8 +24,20 @@ def home(request):
                 error = "Pessoa não Possui Saldo!"
         except Consumer.DoesNotExist:
             error = "Pessoa Não Cadastrada!"
-
     return render(request, 'application/home.html', {'error':error})
+
+@login_required(login_url='operators_login')
+def search_cpf(request):
+    data = ""
+    if request.is_ajax():
+        querry = request.GET.get('term', '')
+        search_response = Consumer.objects.filter(cpf__startswith=querry)
+        results = []
+        for obj in search_response:
+            results.append(obj.cpf)
+        data = json.dumps(results)
+
+    return HttpResponse(data)
 
 ### Authentication ###
 def operators_login(request):
