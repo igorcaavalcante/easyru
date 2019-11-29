@@ -3,7 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from core.forms import operatorsNewForm
 from core.models import Consumer, Gru, Transaction
-import json
+import json, re
 
 def index(request):
     return render(request, 'application/index.html')
@@ -12,10 +12,30 @@ def index(request):
 def home(request):
     error = ""
     if request.method == 'POST':
+        if is_cpf(request.POST['cpf']):
+            try:
+                consumer = Consumer.objects.get(cpf=request.POST['cpf'])
+                return render(request, 'application/home_meal.html', {'consumer':consumer, 'error':error})
+            except Consumer.DoesNotExist:
+                error = "Pessoa Não Cadastrada!"
+        else:
+            error = "CPF Inválido!"
+    return render(request, 'application/home.html', {'error':error})
+
+@login_required(login_url='operators_login')
+def home_meal(request):
+    error = ""
+    if request.method == 'POST':
         try:
-            consumer = Consumer.objects.get(cpf=request.POST['cpf'])
+            consumer = Consumer.objects.get(cpf=request.POST['consumer_cpf'])
+            value = consumer.get_meal_value(request.POST['meal_kind'])
             if consumer.credit >= value:
-                transaction = Transaction(type=Transaction.Type.Output.value, value=value)
+                transaction = Transaction(
+                    type=Transaction.Type.Output.value,
+                    value=value,
+                    consumer_cpf=consumer.cpf,
+                    operator=request.user.name)
+
                 consumer.credit -= value
                 transaction.save()
                 consumer.save()
@@ -24,7 +44,7 @@ def home(request):
                 error = "Pessoa não Possui Saldo!"
         except Consumer.DoesNotExist:
             error = "Pessoa Não Cadastrada!"
-    return render(request, 'application/home.html', {'error':error})
+    return render(request, 'application/home_meal.html', {'error':error})
 
 @login_required(login_url='operators_login')
 def search_cpf(request):
@@ -82,7 +102,12 @@ def consumers_new(request):
     error = ""
     if request.method == 'POST':
         try:
-            consumer = Consumer(name=request.POST['name'], cpf=request.POST['cpf'], credit=0, has_studentship=False)
+            consumer = Consumer(
+                name=request.POST['name'],
+                cpf=request.POST['cpf'], credit=0,
+                has_studentship=request.POST['has_studentship'],
+                type=request.POST['type'])
+
             consumer.save()
             return redirect('consumers')
         except Exception as e:
@@ -113,11 +138,21 @@ def grus(request):
 def grus_new(request):
     error = ""
     if request.method == 'POST':
-        gru = Gru(code=request.POST['code'],value=request.POST['value'], consumer_cpf=request.POST['consumer_cpf'], operator=request.user.name)
+        gru = Gru(
+            code=request.POST['code'],
+            value=request.POST['value'],
+            consumer_cpf=request.POST['consumer_cpf'],
+            operator=request.user.name)
+
         if gru:
             try:
                 consumer = Consumer.objects.get(cpf=gru.consumer_cpf)
-                transaction = Transaction(type=Transaction.Type.Input.value, value=gru.value, consumer_cpf=gru.consumer_cpf, operator=request.user.name)
+                transaction = Transaction(
+                    type=Transaction.Type.Input.value,
+                    value=gru.value,
+                    consumer_cpf=gru.consumer_cpf,
+                    operator=request.user.name)
+
                 consumer.credit += int(gru.value)
                 transaction.save()
                 consumer.save()
@@ -146,3 +181,25 @@ def transactions(request):
     data = {}
     data['object_list'] = transaction
     return render(request, 'application/transactions.html', data)
+
+
+def is_cpf(cpf):
+    if not re.match(r'\d{3}\.\d{3}\.\d{3}-\d{2}', cpf):
+        return False
+
+    numbers = [int(digit) for digit in cpf if digit.isdigit()]
+
+    if len(numbers) != 11:
+        return False
+
+    sum_of_products = sum(a*b for a, b in zip(numbers[0:9], range(10, 1, -1)))
+    expected_digit = (sum_of_products * 10 % 11) % 10
+    if numbers[9] != expected_digit:
+        return False
+
+    sum_of_products = sum(a*b for a, b in zip(numbers[0:10], range(11, 1, -1)))
+    expected_digit = (sum_of_products * 10 % 11) % 10
+    if numbers[10] != expected_digit:
+        return False
+
+    return True

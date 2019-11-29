@@ -93,6 +93,11 @@ body {
   color: white;
 }
 
+.btn-tall {
+  height: 100px;
+	font-size: 40px;
+}
+
 .background-image {
     background: url(../imagens/home.jpeg) fixed no-repeat;
     -webkit-background-size: cover;

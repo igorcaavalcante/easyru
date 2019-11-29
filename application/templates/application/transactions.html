@@ -19,6 +19,8 @@
         <tr>
           <th>Tipo</th>
           <th>Valor</th>
+          <th>Consumidor</th>
+          <th>Operador</th>
         </tr>
       </thead>
       <tbody>
@@ -26,6 +28,8 @@
         <tr>
           <td>{{ transaction.get_type }}</td>
           <td>R$ {{ transaction.value }}.00</td>
+          <td>{{ transaction.consumer_cpf }}</td>
+          <td>{{ transaction.operator }}</td>
         </tr>
         {% endfor %}
       </tbody>

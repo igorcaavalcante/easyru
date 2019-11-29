@@ -1,0 +1,66 @@
+{% extends 'application/base.html' %}
+{% load static %}
+{% block title %}EasyRU - UFAL{% endblock %}
+{% block css %}<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
+{% block content %}
+
+<body>
+{% include 'application/navbar.html'%}
+<div class="container">
+  <div class="py-5 text-center">
+    <h2>DEBITAR REFEIÇÃO</h2>
+    <p class="lead">Insira os dados da Refeição do {{consumer.name}}</p>
+  </div>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <div id="meal_btns" class="">
+        <button id="lunch" class="btn btn-tall btn-block btn-custom">Almoço</button>
+        <button id="dinner" class="btn btn-tall btn-block btn-custom">Jantar</button>
+      </div>
+      <form id="meal_form" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="consumer_cpf" value="{{ consumer.cpf }}">
+        <input type="hidden" name="meal_kind" value="" id="meal_kind">
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-label-group">
+              <input type="text" class="form-control" name="quantity" required autofocus>
+              <label>Quantidade</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-lg btn-block btn-custom" type="submit">Debitar Refeição</button>
+          </div>
+        </div>
+        {% if error != "" %}
+          <p class="alert alert-danger">{{ error }}</p>
+        {% endif %}
+        <br>
+        <a href="{% url 'home' %}" class="btn btn-lg btn-block btn-custom">Voltar</a>
+      </form>
+    </div>
+  </div>
+  <footer class="my-4 pt-5 text-muted text-center text-small">
+    <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
+  </footer>
+</div>
+<script>
+  $(document).ready(function(){
+      $('#meal_form').hide();
+      $("#meal_btns").on('click', "#lunch", function(){
+          $('#meal_kind').val('lunch');
+          $('#meal_btns').hide();
+          $('#meal_form').show();
+        });
+      $("#meal_btns").on('click', "#dinner", function(){
+          $('#meal_kind').val('lunch');
+          $('#meal_btns').hide();
+          $('#meal_form').show();
+        });
+  });
+</script>
+</body>
+
+{% endblock %}
