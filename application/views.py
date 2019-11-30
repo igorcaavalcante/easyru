@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from core.forms import operatorsNewForm
 from core.models import Consumer, Gru, Transaction
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json, re
 
 def index(request):
@@ -15,7 +16,7 @@ def home(request):
         if is_cpf(request.POST['cpf']):
             try:
                 consumer = Consumer.objects.get(cpf=request.POST['cpf'])
-                return render(request, 'application/home_meal.html', {'consumer':consumer, 'error':error})
+                return redirect('home_meal', consumer.cpf)
             except Consumer.DoesNotExist:
                 error = "Pessoa Não Cadastrada!"
         else:
@@ -23,12 +24,15 @@ def home(request):
     return render(request, 'application/home.html', {'error':error})
 
 @login_required(login_url='operators_login')
-def home_meal(request):
+def home_meal(request, consumer_cpf):
     error = ""
     if request.method == 'POST':
         try:
-            consumer = Consumer.objects.get(cpf=request.POST['consumer_cpf'])
-            value = consumer.get_meal_value(request.POST['meal_kind'])
+            consumer = Consumer.objects.get(cpf=consumer_cpf)
+            if consumer.has_studentship:
+                value = 0
+            else:
+                value = consumer.get_meal_value(request.POST['meal_kind']) * int(request.POST['quantity'])
             if consumer.credit >= value:
                 transaction = Transaction(
                     type=Transaction.Type.Output.value,
@@ -72,18 +76,22 @@ def operators_login(request):
     return render(request, 'application/operators_login.html', {'error':error})
 
 def operators_new(request):
+    error = ""
     if request.method == 'POST':
         form = operatorsNewForm(request.POST or None)
         if form.is_valid():
-            form.save()
-            cpf = form.cleaned_data.get('cpf')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(cpf=cpf, password=raw_password)
-            login(request, user)
-            return redirect('home')
+            if is_cpf(form.cleaned_data.get('cpf')):
+                form.save()
+                cpf = form.cleaned_data.get('cpf')
+                raw_password = form.cleaned_data.get('password1')
+                user = authenticate(cpf=cpf, password=raw_password)
+                login(request, user)
+                return redirect('home')
+            else:
+                error = "CPF Inválido!"
     else:
         form = operatorsNewForm()
-    return render(request, 'application/operators_new.html', {'form':form})
+    return render(request, 'application/operators_new.html', {'form':form, 'error':error})
 
 def operators_logout(request):
     logout(request)
@@ -92,10 +100,18 @@ def operators_logout(request):
 ### Consumers ###
 @login_required(login_url='operators_login')
 def consumers(request):
-    consumers = Consumer.objects.all()
-    data = {}
-    data['object_list'] = consumers
-    return render(request, 'application/consumers.html', data)
+    consumers_raw = Consumer.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(consumers_raw, 10)
+    try:
+        consumers = paginator.page(page)
+    except PageNotAnInteger:
+        consumers = paginator.page(1)
+    except EmptyPage:
+        consumers = paginator.page(paginator.num_pages)
+
+    return render(request, 'application/consumers.html', { 'consumers':consumers })
 
 @login_required(login_url='operators_login')
 def consumers_new(request):
@@ -129,10 +145,18 @@ def consumers_delete(request, pk):
 ### Grus ###
 @login_required(login_url='operators_login')
 def grus(request):
-    grus = Gru.objects.all()
-    data = {}
-    data['object_list'] = grus
-    return render(request, 'application/grus.html', data)
+    grus_raw = Gru.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(grus_raw, 10)
+    try:
+        grus = paginator.page(page)
+    except PageNotAnInteger:
+        grus = paginator.page(1)
+    except EmptyPage:
+        grus = paginator.page(paginator.num_pages)
+
+    return render(request, 'application/grus.html', { 'grus':grus })
 
 @login_required(login_url='operators_login')
 def grus_new(request):
@@ -177,12 +201,20 @@ def grus_delete(request, pk):
 ### Transactions ###
 @login_required(login_url='operators_login')
 def transactions(request):
-    transaction = Transaction.objects.all()
-    data = {}
-    data['object_list'] = transaction
-    return render(request, 'application/transactions.html', data)
+    transactions_raw = Transaction.objects.all()
+    page = request.GET.get('page', 1)
 
+    paginator = Paginator(transactions_raw, 10)
+    try:
+        transactions = paginator.page(page)
+    except PageNotAnInteger:
+        transactions = paginator.page(1)
+    except EmptyPage:
+        transactions = paginator.page(paginator.num_pages)
 
+    return render(request, 'application/transactions.html', { 'transactions':transactions })
+
+### Validate CPF ###
 def is_cpf(cpf):
     if not re.match(r'\d{3}\.\d{3}\.\d{3}-\d{2}', cpf):
         return False

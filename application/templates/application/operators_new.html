@@ -39,6 +39,9 @@
             <p class="alert alert-danger">{{ error }}</p>
           {% endfor %}
         {% endfor %}
+        {% if error != "" %}
+        <p class="alert alert-danger">{{ error }}</p>
+        {% endif %}
         <button class="btn btn-lg btn-block btn-custom" type="submit">Cadastrar Funcionário</button>
       </form>
     </div>

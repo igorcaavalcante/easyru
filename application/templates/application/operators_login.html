@@ -15,7 +15,7 @@
       <form class="form-signin" method="post">
         {% csrf_token %}
         <div class="form-label-group">
-          <input type="number" id="inputCPF" class="form-control" placeholder="CPF" name="cpf" required autofocus>
+          <input type="text" id="inputCPF" class="form-control" placeholder="CPF" name="cpf" required autofocus>
           <label for="inputCPF">CPF</label>
         </div>
 
@@ -42,6 +42,11 @@
       <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
   </footer>
 </div>
+<script>
+  $(document).ready(function(){
+		$("#inputCPF").mask("999.999.999-99");
+	});
+</script>
 </body>
 
 {% endblock %}

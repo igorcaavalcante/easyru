@@ -26,7 +26,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for consumer in object_list %}
+        {% for consumer in consumers %}
         <tr>
           <td>{{ consumer.name }}</td>
           <td>{{ consumer.cpf }}</td>
@@ -38,6 +38,41 @@
         {% endfor %}
       </tbody>
       </table>
+      {% if consumers.has_other_pages %}
+      <nav>
+        <ul class="pagination pagination-sm justify-content-center">
+          {% if consumers.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ consumers.previous_page_number }}">&laquo;</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" href="">&laquo;</a>
+            </li>
+          {% endif %}
+          {% for i in consumers.paginator.page_range %}
+            {% if consumers.number == i %}
+              <li class="page-item active">
+                <a class="page-link" href="">{{ i }}</a>
+              </li>
+            {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+          {% if consumers.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ consumers.next_page_number }}">&raquo;</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" href="">&raquo;</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
       <a href="{% url 'consumers_new' %}" class="btn btn-lg btn-block btn-custom">Cadastrar Pessoa</a>
     </div>
   </div>

@@ -50,21 +50,18 @@ class Consumer(models.Model):
             return "Servidor/Professor"
 
     def get_meal_value(self, meal_kind):
-        if self.type == Consumer.Type.Graduate.value:
-            if meal_kind == "lunch":
+        if meal_kind == "lunch":
+            if self.type == Consumer.Type.Graduate.value:
                 return 3
-            else:
-                return 1
-        elif self.type == Consumer.Type.Post_Graduate.value:
-            if meal_kind == "lunch":
+            elif self.type == Consumer.Type.Post_Graduate.value:
                 return 5
             else:
-                return 3
-        else:
-            if meal_kind == "lunch":
                 return 8
-            else:
-                return 5
+        elif meal_kind == "dinner":
+            return 3
+        else:
+            return 1
+
 
 class Gru(models.Model):
     code = models.CharField(max_length=20)
