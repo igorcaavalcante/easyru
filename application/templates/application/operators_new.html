@@ -1,9 +1,10 @@
 {% extends 'application/base.html' %}
 {% load static %}
 {% block title %}CADASTRO DE USUARIO{% endblock %}
-{% block css %}
-<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
+{% block css %}<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
+
+<body>
 <div class="container">
   <div class="py-5 text-center">
     <h2>CADASTRO DE USUARIO</h2>
@@ -15,7 +16,7 @@
       <form method="post">
         {% csrf_token %}
         <div class="form-label-group">
-          <input class="form-control" type="text" name="cpf" maxlength="11" autofocus="" required="" id="id_cpf">
+          <input class="form-control" id="cpf" type="text" name="cpf" autofocus="" required="" id="id_cpf">
           <label for="id_cpf">CPF:</label>
         </div>
 
@@ -38,6 +39,9 @@
             <p class="alert alert-danger">{{ error }}</p>
           {% endfor %}
         {% endfor %}
+        {% if error != "" %}
+        <p class="alert alert-danger">{{ error }}</p>
+        {% endif %}
         <button class="btn btn-lg btn-block btn-custom" type="submit">Cadastrar Funcionário</button>
       </form>
     </div>
@@ -46,4 +50,11 @@
       <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
   </footer>
 </div>
+<script>
+  $(document).ready(function(){
+		$("#cpf").mask("999.999.999-99");
+	});
+</script>
+</body>
+
 {% endblock %}

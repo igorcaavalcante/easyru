@@ -7,7 +7,7 @@ from .managers import OperatorManager
 # Create your models here.
 class Operator(AbstractUser):
     username = None
-    cpf = models.CharField(max_length=11, unique=True)
+    cpf = models.CharField(max_length=14, unique=True)
     name = models.CharField(max_length=50)
 
     USERNAME_FIELD = 'cpf'
@@ -20,11 +20,20 @@ class Operator(AbstractUser):
         verbose_name_plural = 'operators'
 
 class Consumer(models.Model):
+    class Type(Enum):
+        Graduate = 'Graduate'
+        Post_Graduate = 'Post_Graduate'
+        Teacher = 'Teacher'
+        @classmethod
+        def choices(cls):
+            return tuple((i.name, i.value) for i in cls)
+
     name = models.CharField(max_length=50)
-    cpf = models.CharField(max_length=11, unique=True)
+    cpf = models.CharField(max_length=14, unique=True)
     credit = models.IntegerField(default=0)
     has_studentship = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
+    type = models.CharField(max_length=20, choices=Type.choices())
 
     def get_studentship(self):
         if self.has_studentship:
@@ -32,10 +41,32 @@ class Consumer(models.Model):
         else:
             return "Não"
 
+    def get_type(self):
+        if self.type == Consumer.Type.Graduate.value:
+            return "Graduando"
+        elif self.type == Consumer.Type.Post_Graduate.value:
+            return "Pós Graduando"
+        else:
+            return "Servidor/Professor"
+
+    def get_meal_value(self, meal_kind):
+        if meal_kind == "lunch":
+            if self.type == Consumer.Type.Graduate.value:
+                return 3
+            elif self.type == Consumer.Type.Post_Graduate.value:
+                return 5
+            else:
+                return 8
+        elif meal_kind == "dinner":
+            return 3
+        else:
+            return 1
+
+
 class Gru(models.Model):
     code = models.CharField(max_length=20)
     value = models.IntegerField(default=0)
-    consumer_cpf = models.CharField(max_length=11)
+    consumer_cpf = models.CharField(max_length=14)
     operator = models.CharField(max_length=50)
     created_at = models.DateTimeField(default=timezone.now)
 
@@ -57,7 +88,7 @@ class Transaction(models.Model):
     type = models.CharField(max_length=10, choices=Type.choices())
     value = models.IntegerField()
     created_at = models.DateTimeField(default=timezone.now)
-    consumer_cpf = models.CharField(max_length=11)
+    consumer_cpf = models.CharField(max_length=14)
     operator = models.CharField(max_length=50)
 
     def get_type(self):

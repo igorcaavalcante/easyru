@@ -1,6 +1,6 @@
 {% extends 'application/base.html' %}
 {% load static %}
-{% block title %}CADASTRAR GRU{% endblock %}
+{% block title %}EasyRU - UFAL{% endblock %}
 {% block css %}<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
 
@@ -8,8 +8,8 @@
 {% include 'application/navbar.html'%}
 <div class="container">
   <div class="py-5 text-center">
-    <h2>CADASTRAR GRU</h2>
-    <p class="lead">Insira os dados do GRU</p>
+    <h2>DEBITAR REFEIÇÃO</h2>
+    <p class="lead">Insira os dados abaixo</p>
   </div>
   <div class="row">
     <div class="col-md-3"></div>
@@ -19,33 +19,23 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-label-group">
-              <input id="cpf" type="text" class="form-control" name="consumer_cpf" required autofocus>
-              <label>CPF do Consumidor</label>
+              <input type="text" class="form-control" name="cpf" id="cpf" required autofocus>
+              <label>CPF</label>
             </div>
           </div>
           <div class="col-md-6">
-            <div class="form-label-group">
-              <input type="number" class="form-control" name="value" min="1" required>
-              <label>Valor</label>
-            </div>
+            <button class="btn btn-lg btn-block btn-custom" type="submit">Proximo</button>
           </div>
+          <br>
         </div>
-        <div class="form-label-group">
-          <input type="number" class="form-control" name="code" min="1" required>
-          <label>Código de Barras</label>
-        </div>
-        <br>
         {% if error != "" %}
-        <p class="alert alert-danger">{{ error }}</p>
+          <p class="alert alert-danger">{{ error }}</p>
         {% endif %}
-        <button class="btn btn-lg btn-block btn-custom" type="submit">Cadastrar GRU</button>
       </form>
-      <br>
-      <a href="{% url 'grus' %}" class="btn btn-lg btn-block btn-custom">Voltar</a>
     </div>
   </div>
   <footer class="my-4 pt-5 text-muted text-center text-small">
-      <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
+    <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
   </footer>
 </div>
 <script>

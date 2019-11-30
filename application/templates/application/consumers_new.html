@@ -3,6 +3,8 @@
 {% block title %}CADASTRAR PESSOA{% endblock %}
 {% block css %}<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
+
+<body>
 {% include 'application/navbar.html'%}
 <div class="container">
   <div class="py-5 text-center">
@@ -23,11 +25,36 @@
           </div>
           <div class="col-md-6">
             <div class="form-label-group">
-              <input type="number" class="form-control" name="cpf" required>
+              <input type="text" id="cpf" class="form-control" name="cpf" required>
               <label>CPF</label>
             </div>
           </div>
+          <div class="container text-center">
+            <div class="form-check form-check-inline">
+              <input id="type-0" class="form-check-input" type="radio" name="type" value="Graduate" checked>
+              <label for="type-0" class="form-check-label">Graduando</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input id="type-1" class="form-check-input" type="radio" name="type" value="Post_Graduate">
+              <label for="type-1" class="form-check-label">Pós Graduando</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input id="type-2" class="form-check-input" type="radio" name="type" value="Teacher">
+              <label for="type-2" class="form-check-label">Servidor/Professor</label>
+            </div>
+          </div>
+          <div class="container text-center">
+            <div class="form-check form-check-inline">
+              <input id="has-0" class="form-check-input" type="radio" name="has_studentship" value="False" checked>
+              <label for="has-0" class="form-check-label">Não Possuo Bolsa</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input id="has-1" class="form-check-input" type="radio" name="has_studentship" value="True">
+              <label for="has-1" class="form-check-label">Possuo Bolsa</label>
+            </div>
+          </div>
         </div>
+        <br>
         {% if error != "" %}
         <p class="alert alert-danger">{{ error }}</p>
         {% endif %}
@@ -41,4 +68,11 @@
     <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
   </footer>
 </div>
+<script>
+  $(document).ready(function(){
+		$("#cpf").mask("999.999.999-99");
+	});
+</script>
+</body>
+
 {% endblock %}

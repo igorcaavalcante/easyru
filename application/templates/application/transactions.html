@@ -3,6 +3,8 @@
 {% block title %}TRANSAÇÕES{% endblock %}
 {% block css %}<link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
+
+<body>
 {% include 'application/navbar.html'%}
 <div class="container">
   <div class="py-5 text-center">
@@ -17,21 +19,66 @@
         <tr>
           <th>Tipo</th>
           <th>Valor</th>
+          <th>Consumidor</th>
+          <th>Operador</th>
         </tr>
       </thead>
       <tbody>
-        {% for transaction in object_list %}
-        <tr>
+        {% for transaction in transactions %}
+        {% if transaction.type == 'Input' %}
+        <tr class="table-success">
+        {% else %}
+        <tr class="table-danger">
+        {% endif %}
           <td>{{ transaction.get_type }}</td>
           <td>R$ {{ transaction.value }}.00</td>
+          <td>{{ transaction.consumer_cpf }}</td>
+          <td>{{ transaction.operator }}</td>
         </tr>
         {% endfor %}
       </tbody>
       </table>
+      {% if transactions.has_other_pages %}
+      <nav>
+        <ul class="pagination pagination-sm justify-content-center">
+          {% if transactions.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ transactions.previous_page_number }}">&laquo;</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" href="">&laquo;</a>
+            </li>
+          {% endif %}
+          {% for i in transactions.paginator.page_range %}
+            {% if transactions.number == i %}
+              <li class="page-item active">
+                <a class="page-link" href="">{{ i }}</a>
+              </li>
+            {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+          {% if transactions.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ transactions.next_page_number }}">&raquo;</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" href="">&raquo;</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
     </div>
   </div>
   <footer class="my-4 pt-5 text-muted text-center text-small">
     <p class="lead mb-1" style="font-size: 20px;">&copy; 2019 UFAL Arapiraca</p>
   </footer>
 </div>
+</body>
+
 {% endblock %}
