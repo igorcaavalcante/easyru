@@ -4,7 +4,6 @@ from django.utils import timezone
 from enum import Enum
 from .managers import OperatorManager
 
-# Create your models here.
 class Operator(AbstractUser):
     username = None
     cpf = models.CharField(max_length=14, unique=True)
@@ -30,6 +29,7 @@ class Consumer(models.Model):
 
     name = models.CharField(max_length=50)
     cpf = models.CharField(max_length=14, unique=True)
+    password = models.CharField(max_length=20)
     credit = models.IntegerField(default=0)
     has_studentship = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
@@ -61,7 +61,6 @@ class Consumer(models.Model):
             return 3
         else:
             return 1
-
 
 class Gru(models.Model):
     code = models.CharField(max_length=20)
