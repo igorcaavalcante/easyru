@@ -5,7 +5,7 @@ from core.models import Consumer, Transaction
 from core.serializers import ConsumerSerializer, TransactionSerializer
 
 @csrf_exempt
-def consumer_new(request):
+def consumer(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
         serializer = ConsumerSerializer(data=data)
@@ -36,6 +36,17 @@ def consumer_views(request, consumer_cpf):
     elif request.method == 'DELETE':
         consumer.delete()
         return HttpResponse(status=204)
+
+@csrf_exempt
+def transaction(request, id):
+    try:
+        transaction = Transaction.objects.get(id=id)
+    except Transaction.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = TransactionSerializer(transaction)
+        return JsonResponse(serializer.data)
 
 @csrf_exempt
 def transaction_views(request, consumer_cpf):
