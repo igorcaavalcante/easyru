@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from core.forms import operatorsNewForm
+from django.contrib.auth.forms import UserCreationForm
 from core.models import Consumer, Gru, Transaction
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json, re
@@ -78,7 +78,7 @@ def operators_login(request):
 def operators_new(request):
     error = ""
     if request.method == 'POST':
-        form = operatorsNewForm(request.POST or None)
+        form = UserCreationForm(request.POST or None)
         if form.is_valid():
             if is_cpf(form.cleaned_data.get('cpf')):
                 form.save()

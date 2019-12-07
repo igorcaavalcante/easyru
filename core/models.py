@@ -2,21 +2,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 from enum import Enum
-from .managers import OperatorManager
 
-class Operator(AbstractUser):
-    username = None
-    cpf = models.CharField(max_length=14, unique=True)
-    name = models.CharField(max_length=50)
-
-    USERNAME_FIELD = 'cpf'
-    REQUIRED_FIELDS = ['name']
-
-    objects = OperatorManager()
-
-    class Meta:
-        verbose_name = 'operator'
-        verbose_name_plural = 'operators'
+class User(AbstractUser):
+    is_consumer = models.BooleanField(default=False)
 
 class Consumer(models.Model):
     class Type(Enum):
@@ -27,9 +15,7 @@ class Consumer(models.Model):
         def choices(cls):
             return tuple((i.name, i.value) for i in cls)
 
-    name = models.CharField(max_length=50)
-    cpf = models.CharField(max_length=14, unique=True)
-    password = models.CharField(max_length=20)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     credit = models.IntegerField(default=0)
     has_studentship = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
@@ -74,7 +60,7 @@ class Gru(models.Model):
             consumer = Consumer.objects.get(cpf=self.consumer_cpf)
             return consumer.name
         except Consumer.DoesNotExist:
-            return "None"
+            return "Not Found"
 
 class Transaction(models.Model):
     class Type(Enum):
