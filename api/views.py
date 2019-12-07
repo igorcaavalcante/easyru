@@ -17,7 +17,7 @@ def consumer(request):
 @csrf_exempt
 def consumer_views(request, consumer_cpf):
     try:
-        consumer = Consumer.objects.get(cpf=consumer_cpf)
+        consumer = Consumer.objects.get(user__username=consumer_cpf)
     except Consumer.DoesNotExist:
         return HttpResponse(status=404)
 
