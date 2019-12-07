@@ -1,12 +1,7 @@
-from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Operator
+from .models import User
 
-class operatorsNewForm(UserCreationForm):
+class UserNewForm(UserCreationForm):
     class Meta:
-        model = Operator
-        fields = ('cpf', 'name',)
-        labels = {
-            'cpf' : 'CPF',
-            'name' : 'Nome',
-        }
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'password1', 'password2')
