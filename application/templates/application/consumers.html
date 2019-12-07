@@ -28,8 +28,8 @@
       <tbody>
         {% for consumer in consumers %}
         <tr>
-          <td>{{ consumer.name }}</td>
-          <td>{{ consumer.cpf }}</td>
+          <td>{{ consumer.user.get_full_name }}</td>
+          <td>{{ consumer.user.username }}</td>
           <td>R$ {{ consumer.credit }}.00</td>
           <td>{{ consumer.get_studentship }}</td>
           <td>{{ consumer.get_type }}</td>

@@ -57,8 +57,8 @@ class Gru(models.Model):
 
     def get_consumer_name(self):
         try:
-            consumer = Consumer.objects.get(cpf=self.consumer_cpf)
-            return consumer.name
+            consumer = Consumer.objects.get(user__username=self.consumer_cpf)
+            return consumer.user.get_full_name()
         except Consumer.DoesNotExist:
             return "Not Found"
 

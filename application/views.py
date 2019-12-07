@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
-from core.models import Consumer, Gru, Transaction
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from core.models import Consumer, Gru, Transaction, User
+from core.forms import UserNewForm
 import json, re
 
 def index(request):
@@ -12,11 +12,12 @@ def index(request):
 @login_required(login_url='operators_login')
 def home(request):
     error = ""
+
     if request.method == 'POST':
-        if is_cpf(request.POST['cpf']):
+        if is_cpf_valid(request.POST['cpf']):
             try:
-                consumer = Consumer.objects.get(cpf=request.POST['cpf'])
-                return redirect('home_meal', consumer.cpf)
+                consumer = Consumer.objects.get(user__username=request.POST['cpf'])
+                return redirect('home_meal', consumer.user.username)
             except Consumer.DoesNotExist:
                 error = "Pessoa Não Cadastrada!"
         else:
@@ -28,7 +29,7 @@ def home_meal(request, consumer_cpf):
     error = ""
     if request.method == 'POST':
         try:
-            consumer = Consumer.objects.get(cpf=consumer_cpf)
+            consumer = Consumer.objects.get(user__username=consumer_cpf)
             if consumer.has_studentship:
                 value = 0
             else:
@@ -37,8 +38,8 @@ def home_meal(request, consumer_cpf):
                 transaction = Transaction(
                     type=Transaction.Type.Output.value,
                     value=value,
-                    consumer_cpf=consumer.cpf,
-                    operator=request.user.name)
+                    consumer_cpf=consumer.user.username,
+                    operator=request.user.get_full_name())
 
                 consumer.credit -= value
                 transaction.save()
@@ -55,10 +56,10 @@ def search_cpf(request):
     data = ""
     if request.is_ajax():
         querry = request.GET.get('term', '')
-        search_response = Consumer.objects.filter(cpf__startswith=querry)
+        search_response = Consumer.objects.filter(user__username__startswith=querry)
         results = []
         for obj in search_response:
-            results.append(obj.cpf)
+            results.append(obj.user.username)
         data = json.dumps(results)
 
     return HttpResponse(data)
@@ -67,8 +68,8 @@ def search_cpf(request):
 def operators_login(request):
     error = ""
     if request.method == 'POST':
-        user = authenticate(request, cpf=request.POST['cpf'], password=request.POST['password'])
-        if user is not None:
+        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
+        if user is not None and not user.is_consumer:
             login(request, user)
             return redirect('home')
         else:
@@ -78,19 +79,19 @@ def operators_login(request):
 def operators_new(request):
     error = ""
     if request.method == 'POST':
-        form = UserCreationForm(request.POST or None)
+        form = UserNewForm(request.POST or None)
         if form.is_valid():
-            if is_cpf(form.cleaned_data.get('cpf')):
+            if is_cpf_valid(form.cleaned_data.get('username')):
                 form.save()
-                cpf = form.cleaned_data.get('cpf')
+                username = form.cleaned_data.get('username')
                 raw_password = form.cleaned_data.get('password1')
-                user = authenticate(cpf=cpf, password=raw_password)
+                user = authenticate(username=username, password=raw_password)
                 login(request, user)
                 return redirect('home')
             else:
                 error = "CPF Inválido!"
     else:
-        form = operatorsNewForm()
+        form = UserNewForm()
     return render(request, 'application/operators_new.html', {'form':form, 'error':error})
 
 def operators_logout(request):
@@ -117,17 +118,30 @@ def consumers(request):
 def consumers_new(request):
     error = ""
     if request.method == 'POST':
-        try:
-            consumer = Consumer(
-                name=request.POST['name'],
-                cpf=request.POST['cpf'], credit=0,
-                has_studentship=request.POST['has_studentship'],
-                type=request.POST['type'])
+        if is_cpf_valid(request.POST['username']):
+            try:
+                user = User(
+                    username=request.POST['username'],
+                    first_name=request.POST['first_name'],
+                    last_name=request.POST['last_name'],
+                    is_consumer=True
+                )
+                user.set_password(request.POST['password'])
+                user.save()
 
-            consumer.save()
-            return redirect('consumers')
-        except Exception as e:
-            error = "CPF Já Cadastrado!"
+                consumer = Consumer(
+                    credit=0,
+                    has_studentship=request.POST['has_studentship'],
+                    type=request.POST['type'],
+                    user=User.objects.get(username=request.POST['username'])
+                )
+
+                consumer.save()
+                return redirect('consumers')
+            except Exception as e:
+                error = "CPF Já Cadastrado!"
+        else:
+            error = "CPF Invalido!"
 
     return render(request, 'application/consumers_new.html', { 'error':error })
 
@@ -166,16 +180,18 @@ def grus_new(request):
             code=request.POST['code'],
             value=request.POST['value'],
             consumer_cpf=request.POST['consumer_cpf'],
-            operator=request.user.name)
+            operator=request.user.get_full_name()
+            )
 
         if gru:
             try:
-                consumer = Consumer.objects.get(cpf=gru.consumer_cpf)
+                consumer = Consumer.objects.get(user__username=gru.consumer_cpf)
                 transaction = Transaction(
                     type=Transaction.Type.Input.value,
                     value=gru.value,
                     consumer_cpf=gru.consumer_cpf,
-                    operator=request.user.name)
+                    operator=request.user.get_full_name()
+                    )
 
                 consumer.credit += int(gru.value)
                 transaction.save()
@@ -215,13 +231,19 @@ def transactions(request):
     return render(request, 'application/transactions.html', { 'transactions':transactions })
 
 ### Validate CPF ###
-def is_cpf(cpf):
+def is_cpf_valid(cpf):
     if not re.match(r'\d{3}\.\d{3}\.\d{3}-\d{2}', cpf):
         return False
 
     numbers = [int(digit) for digit in cpf if digit.isdigit()]
+    count = 0
+    zero = numbers[0]
 
-    if len(numbers) != 11:
+    for i in numbers:
+        if zero == numbers[i] and i != 0:
+            count += 1
+
+    if len(numbers) != 11 or count == 11:
         return False
 
     sum_of_products = sum(a*b for a, b in zip(numbers[0:9], range(10, 1, -1)))
