@@ -1,9 +1,11 @@
 from django.urls import path
+from rest_framework.authtoken.views import obtain_auth_token
 from . import views
 
 urlpatterns = [
+    path('auth/', obtain_auth_token),
     path('consumer/', views.consumer, name='consumer'),
-    path('consumer/<str:consumer_cpf>', views.consumer_views, name='consumer_views'),
-    path('transactions/<str:consumer_cpf>', views.transaction_views, name='transaction_views'),
-    path('transactions/id/<int:id>', views.transaction, name='transaction'),
+    path('consumer/home/', views.consumer_views, name='consumer_views'),
+    path('transactions/', views.transaction, name='transaction'),
+    path('transactions/<int:id>', views.transaction_views, name='transaction_views'),
 ]
