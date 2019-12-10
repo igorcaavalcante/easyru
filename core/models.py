@@ -1,16 +1,7 @@
-from django.conf import settings
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from rest_framework.authtoken.models import Token
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 from enum import Enum
-
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        Token.objects.create(user=instance)
 
 class User(AbstractUser):
     is_consumer = models.BooleanField(default=False)
@@ -29,6 +20,7 @@ class Consumer(models.Model):
     has_studentship = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
     type = models.CharField(max_length=20, choices=Type.choices())
+    user_hash = models.CharField(max_length=50)
 
     def get_studentship(self):
         if self.has_studentship:
