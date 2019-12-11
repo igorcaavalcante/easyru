@@ -16,11 +16,13 @@ Uma aplicação para facilitar o funcionamento do Restaurante Universitário da 
 ##### Ativando o Ambiente Virtual:
 >source <nome_da_pasta>/bin/activate
 ##### Instalando Requerimentos no Ambiente Virtual:
->pip3 install django
+>pip3 install django==2.2
 
 >pip3 install djangorestframework
 
 >pip3 install pycrypto
+
+>pip3 install django-cors-headers
 
 ## Execução de Teste
 >python3 manage.py runserver
