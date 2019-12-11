@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Consumer, Transaction, User
+from .models import Consumer, Transaction, User, Gru
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,3 +35,20 @@ class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
         fields = ['type', 'value', 'created_at', 'consumer_cpf', 'operator']
+
+class GruSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Gru
+        fields = ['code', 'value', 'created_at', 'consumer_cpf', 'operator']
+
+    def create(self, validated_data):
+        gru = Gru(
+            code=validated_data['code'],
+            value=validated_data['value'],
+            consumer_cpf=validated_data['consumer_cpf'],
+            operator=validated_data['operator']
+            )
+
+        gru.save()
+
+        return gru

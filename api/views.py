@@ -4,8 +4,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from core.models import Consumer, Transaction
-from core.serializers import ConsumerSerializer, TransactionSerializer
+from core.models import Consumer, Transaction, Gru
+from core.serializers import ConsumerSerializer, TransactionSerializer, GruSerializer
 
 @csrf_exempt
 def consumer(request):
@@ -70,3 +70,24 @@ def transaction_views(request, id):
     if request.method == 'GET':
         serializer = TransactionSerializer(transaction)
         return JsonResponse(serializer.data)
+
+@csrf_exempt
+@api_view(['GET', 'POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def gru(request):
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = GruSerializer(data=data)
+        if serializer.is_valid():
+            serializer.create(validated_data=data)
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
+    elif request.method == 'GET':
+        try:
+            gru_list = Gru.objects.filter(consumer_cpf=request.user.username)
+        except Gru.DoesNotExist:
+            return HttpResponse(status=404)
+
+        serializer = GruSerializer(gru_list, many=True)
+        return JsonResponse(serializer.data, safe=False)
