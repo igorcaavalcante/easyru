@@ -10,7 +10,7 @@ class ConsumerSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only = True)
     class Meta:
         model = Consumer
-        fields = ['credit', 'has_studentship', 'created_at', 'type', 'user']
+        fields = ['credit', 'has_studentship', 'created_at', 'type', 'user', 'user_hash']
 
     def create(self, validated_data):
         user = User(
