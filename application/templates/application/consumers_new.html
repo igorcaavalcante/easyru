@@ -19,16 +19,32 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-label-group">
-              <input type="text" class="form-control" name="name" required autofocus>
-              <label>Nome</label>
+              <input class="form-control" id="cpf" type="text" name="username" autofocus="" required="" id="id_cpf">
+              <label for="id_cpf">CPF:</label>
             </div>
           </div>
+
           <div class="col-md-6">
             <div class="form-label-group">
-              <input type="text" id="cpf" class="form-control" name="cpf" required>
-              <label>CPF</label>
+              <input class="form-control" type="password" name="password" required="" id="id_password">
+              <label for="id_password1">Senha:</label>
             </div>
           </div>
+
+          <div class="col-md-6">
+            <div class="form-label-group">
+              <input class="form-control" type="text" name="first_name" maxlength="50" required="" id="id_first_name">
+              <label for="id_name">Nome:</label>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-label-group">
+              <input class="form-control" type="text" name="last_name" maxlength="50" required="" id="id_last_name">
+              <label for="id_name">Sobrenome:</label>
+            </div>
+          </div>
+
           <div class="container text-center">
             <div class="form-check form-check-inline">
               <input id="type-0" class="form-check-input" type="radio" name="type" value="Graduate" checked>
@@ -43,6 +59,7 @@
               <label for="type-2" class="form-check-label">Servidor/Professor</label>
             </div>
           </div>
+
           <div class="container text-center">
             <div class="form-check form-check-inline">
               <input id="has-0" class="form-check-input" type="radio" name="has_studentship" value="False" checked>
