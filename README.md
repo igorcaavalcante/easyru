@@ -20,8 +20,6 @@ Uma aplicação para facilitar o funcionamento do Restaurante Universitário da 
 
 >pip3 install djangorestframework
 
->pip3 install pycrypto
-
 >pip3 install django-cors-headers
 
 ## Execução de Teste

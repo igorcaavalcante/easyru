@@ -1,4 +1,3 @@
-from Crypto.Cipher import XOR
 import base64
 from django.conf import settings
 from django.db.models.signals import post_save
@@ -14,6 +13,6 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 @receiver(post_save, sender=Consumer)
 def generate_hash(sender, instance=None, created=False, **kwargs):
     if created:
-        cipher = XOR.new(instance.type)
-        instance.user_hash = base64.b64encode(cipher.encrypt(instance.user.username))
+        encodedBytes = base64.urlsafe_b64encode(instance.user.username.encode("utf-8"))
+        instance.user_hash = str(encodedBytes, "utf-8")
         instance.save(update_fields=['user_hash'])
