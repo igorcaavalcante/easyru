@@ -183,23 +183,11 @@ def grus_new(request):
             operator=request.user.get_full_name()
             )
 
-        if gru:
-            try:
-                consumer = Consumer.objects.get(user__username=gru.consumer_cpf)
-                transaction = Transaction(
-                    type=Transaction.Type.Input.value,
-                    value=gru.value,
-                    consumer_cpf=gru.consumer_cpf,
-                    operator=request.user.get_full_name()
-                    )
-
-                consumer.credit += int(gru.value)
-                transaction.save()
-                consumer.save()
-                gru.save()
-                return redirect('grus')
-            except Consumer.DoesNotExist:
-                error = "Pessoa Não Cadastrada!"
+        try:
+            gru.save()
+            return redirect('grus')
+        except Consumer.DoesNotExist:
+            error = "Pessoa Não Cadastrada!"
 
     return render(request, 'application/grus_new.html', { 'error':error })
 
