@@ -4,8 +4,7 @@ from . import views
 
 urlpatterns = [
     path('auth/', obtain_auth_token),
-    path('consumer/', views.consumer, name='consumer'),
-    path('consumer/home/', views.consumer_views, name='consumer_views'),
+    path('user/me/', views.user_me, name='user_me'),
     path('transactions/', views.transaction, name='transaction'),
     path('transactions/<int:id>', views.transaction_views, name='transaction_views'),
     path('gru/', views.gru, name='gru'),

@@ -4,44 +4,56 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from core.models import Consumer, Transaction, Gru
-from core.serializers import ConsumerSerializer, TransactionSerializer, GruSerializer
-
-@csrf_exempt
-def consumer(request):
-    if request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = ConsumerSerializer(data=data)
-        if serializer.is_valid():
-            serializer.create(validated_data=data)
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+from core.models import Consumer, Transaction, Gru, User
+from core.serializers import ConsumerSerializer, TransactionSerializer, GruSerializer, UserSerializer
 
 @csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def consumer_views(request):
+def user_me(request):
     try:
-        consumer = Consumer.objects.get(user__username=request.user.username)
+        user = User.objects.get(username=request.user.username)
     except Consumer.DoesNotExist:
         return HttpResponse(status=404)
 
-    if request.method == 'GET':
-        serializer = ConsumerSerializer(consumer)
-        return JsonResponse(serializer.data)
+    if user.is_consumer:
+        try:
+            consumer = Consumer.objects.get(user__username=user.username)
+        except Consumer.DoesNotExist:
+            return HttpResponse(status=404)
 
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = ConsumerSerializer(consumer, data=data)
-        if serializer.is_valid():
-            serializer.save()
+        if request.method == 'GET':
+            serializer = ConsumerSerializer(consumer)
             return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
 
-    elif request.method == 'DELETE':
-        consumer.delete()
-        return HttpResponse(status=204)
+        elif request.method == 'PUT':
+            data = JSONParser().parse(request)
+            serializer = ConsumerSerializer(consumer, data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data)
+            return JsonResponse(serializer.errors, status=400)
+
+        elif request.method == 'DELETE':
+            consumer.delete()
+            return HttpResponse(status=204)
+    else:
+        if request.method == 'GET':
+            serializer = UserSerializer(user)
+            return JsonResponse(serializer.data)
+
+        elif request.method == 'PUT':
+            data = JSONParser().parse(request)
+            serializer = UserSerializer(user, data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data)
+            return JsonResponse(serializer.errors, status=400)
+
+        elif request.method == 'DELETE':
+            user.delete()
+            return HttpResponse(status=204)
 
 @csrf_exempt
 @api_view(['GET'])
