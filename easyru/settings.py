@@ -25,7 +25,7 @@ SECRET_KEY = '4lnd-3+tm_6cusf57@+ux(-4e!o8*@60a#1!pr%gm9_o7a&5$g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'core.User'
 
@@ -54,6 +54,7 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -130,3 +131,5 @@ STATIC_URL = '/static/'
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:8100",
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
