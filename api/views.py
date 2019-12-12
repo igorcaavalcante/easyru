@@ -59,6 +59,20 @@ def user_me(request):
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
+def user_hash_get(request, user_hash):
+    try:
+        consumer = Consumer.objects.get(user_hash=user_hash)
+    except Consumer.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = ConsumerSerializer(consumer)
+        return JsonResponse(serializer.data)
+
+@csrf_exempt
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def transaction(request):
     try:
         transaction_list = Transaction.objects.filter(consumer_cpf=request.user.username)
