@@ -133,3 +133,5 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+CORS_ORIGIN_ALLOW_ALL = True
