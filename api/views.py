@@ -70,7 +70,7 @@ def user_hash_get(request, user_hash):
         return JsonResponse(serializer.data)
 
 @csrf_exempt
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def transaction(request):
@@ -79,7 +79,18 @@ def transaction(request):
     except Transaction.DoesNotExist:
         return HttpResponse(status=404)
 
-    if request.method == 'GET':
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = TransactionSerializer(data=data)
+        if serializer.is_valid():
+            serializer.create(validated_data=data)
+            consumer = Consumer.objects.get(user_hash=data['hash'])
+            consumer.credit -= data['value']
+            consumer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
+
+    elif request.method == 'GET':
         serializer = TransactionSerializer(transaction_list, many=True)
         return JsonResponse(serializer.data, safe=False)
 

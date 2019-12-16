@@ -36,6 +36,16 @@ class TransactionSerializer(serializers.ModelSerializer):
         model = Transaction
         fields = ['type', 'value', 'created_at', 'consumer_cpf', 'operator']
 
+    def create(self, validated_data):
+        transaction = Transaction(
+            type = validated_data['type'],
+            value = validated_data['value'],
+            consumer_cpf = validated_data['consumer_cpf'],
+            operator = validated_data['operator'],
+            )
+        transaction.save()
+        return transaction
+
 class GruSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gru
