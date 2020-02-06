@@ -17,10 +17,11 @@
       <table class="table table-sm table-hover">
       <thead>
         <tr>
-          <th>Tipo</th>
-          <th>Valor</th>
-          <th>Consumidor</th>
-          <th>Operador</th>
+          <th><a href="?order_by=type">Tipo</a></th>
+          <th><a href="?order_by=value">Valor</a></th>
+          <th><a href="?order_by=consumer_cpf">Consumidor</a></th>
+          <th><a href="?order_by=operator">Operador</a></th>
+          <th><a href="?order_by=created_at">Data</a></th>
         </tr>
       </thead>
       <tbody>
@@ -34,6 +35,7 @@
           <td>R$ {{ transaction.value }}.00</td>
           <td>{{ transaction.consumer_cpf }}</td>
           <td>{{ transaction.operator }}</td>
+          <td>{{ transaction.created_at }}</td>
         </tr>
         {% endfor %}
       </tbody>

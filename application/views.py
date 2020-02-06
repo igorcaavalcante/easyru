@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
+from django.db import IntegrityError
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -188,6 +189,8 @@ def grus_new(request):
             return redirect('grus')
         except Consumer.DoesNotExist:
             error = "Pessoa Não Cadastrada!"
+        except IntegrityError:
+            error = "Essa Gru Já Foi Cadastrada!"
 
     return render(request, 'application/grus_new.html', { 'error':error })
 
@@ -205,7 +208,8 @@ def grus_delete(request, pk):
 ### Transactions ###
 @login_required(login_url='operators_login')
 def transactions(request):
-    transactions_raw = Transaction.objects.all()
+    order_by = request.GET.get('order_by', 'pk')
+    transactions_raw = Transaction.objects.all().order_by(order_by)
     page = request.GET.get('page', 1)
 
     paginator = Paginator(transactions_raw, 10)

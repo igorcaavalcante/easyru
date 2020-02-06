@@ -50,7 +50,7 @@ class Consumer(models.Model):
             return 1
 
 class Gru(models.Model):
-    code = models.CharField(max_length=20)
+    code = models.CharField(max_length=20, unique=True, null=False)
     value = models.IntegerField(default=0)
     consumer_cpf = models.CharField(max_length=14)
     operator = models.CharField(max_length=50)
